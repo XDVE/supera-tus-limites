@@ -1,5 +1,5 @@
-window.FIREBASE_CONFIG = {
-  apiKey: "AIzaSyAf6JMqd_Isb3iRtSKET4dfbIHwjniR9gM",
+const firebaseConfig = {
+  apiKey: "AIzaSyAf6JMqd_ISb3iRtSkET4dfbIhWjniR9gM",
   authDomain: "supera-tus-limites-a6e6b.firebaseapp.com",
   projectId: "supera-tus-limites-a6e6b",
   storageBucket: "supera-tus-limites-a6e6b.firebasestorage.app",
