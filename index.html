@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html lang="es" class="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#09090b">
+  <link rel="manifest" href="./manifest.json">
+  <title>Supera Tus Límites Aquí y Ahora | Dave Gym App</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              red: '#dc2626',
+              redHover: '#b91c1c',
+              redLight: '#fef2f2',
+              black: '#09090b',
+              darkGray: '#18181b',
+              lightBg: '#f8fafc',
+              cardBg: '#ffffff',
+              cardBorder: '#e2e8f0',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #f8fafc;
+      color: #09090b;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #dc2626;
+    }
+
+    .glow-red-sm {
+      box-shadow: 0 4px 20px rgba(220, 38, 38, 0.15);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-red-600 selection:text-white">
+
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-zinc-200 px-4 py-3 transition-all shadow-sm">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+      
+      <!-- Logo & Brand Name -->
+      <div class="flex items-center gap-3 cursor-pointer" onclick="goHome()">
+        <div class="w-10 h-10 bg-zinc-900 border border-zinc-800 rounded-xl flex items-center justify-center shadow-md group hover:border-red-600 transition-all">
+          <span id="headerLogo" class="contents"></span>
+          <svg class="w-7 h-7 text-red-600 transform group-hover:scale-110 transition-transform" viewBox="0 0 100 100" fill="currentColor">
+            <g transform="translate(50, 45)">
+              <path d="M 0 -22 C -10 -22 -15 -10 0 0 C 15 -10 10 -22 0 -22 Z" transform="rotate(0)" />
+              <path d="M 0 -22 C -10 -22 -15 -10 0 0 C 15 -10 10 -22 0 -22 Z" transform="rotate(72)" />
+              <path d="M 0 -22 C -10 -22 -15 -10 0 0 C 15 -10 10 -22 0 -22 Z" transform="rotate(144)" />
+              <path d="M 0 -22 C -10 -22 -15 -10 0 0 C 15 -10 10 -22 0 -22 Z" transform="rotate(216)" />
+              <path d="M 0 -22 C -10 -22 -15 -10 0 0 C 15 -10 10 -22 0 -22 Z" transform="rotate(288)" />
+            </g>
+            <path d="M 48 45 Q 46 75 35 88 Q 38 88 51 45 Z" fill="currentColor" />
+            <circle cx="50" cy="45" r="3" class="text-zinc-900" fill="currentColor" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="text-lg font-black tracking-wider uppercase text-zinc-900 leading-none">
+            SUPERA <span class="text-red-600">TUS LÍMITES</span>
+          </h1>
+          <p class="text-[10px] text-zinc-500 font-bold tracking-widest mt-0.5">@dve_mx</p>
+        </div>
+      </div>
+
+      <!-- Estado de sincronización en la nube -->
+      <span id="cloudStatus" class="hidden md:inline-flex items-center gap-1.5 text-[10px] font-black px-2.5 py-1 bg-zinc-100 text-zinc-500 border border-zinc-200 rounded-xl" title="Estado de la sincronización">
+        <span class="w-1.5 h-1.5 rounded-full bg-zinc-400"></span> LOCAL
+      </span>
+
+      <!-- User Role Indicator & Actions -->
+      <div id="navRightSection" class="flex items-center gap-3">
+        <button onclick="openCoachLoginModal()" class="px-3.5 py-1.5 text-xs font-bold bg-zinc-900 hover:bg-zinc-800 text-white rounded-xl transition flex items-center gap-2 shadow-sm">
+          <i class="fas fa-user-shield text-red-500"></i>
+          <span>Modo Coach</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <main class="flex-grow max-w-6xl w-full mx-auto px-4 py-6">
+
+    <!-- VIEW 1: CLIENT LOGIN SCREEN -->
+    <section id="loginView" class="max-w-md mx-auto my-10 bg-white border border-zinc-200 rounded-2xl p-6 md:p-8 shadow-xl relative overflow-hidden">
+      <div id="cloudSetupBanner" class="hidden mb-5 bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-900">
+        <div class="flex items-start gap-2"><i class="fas fa-cloud-upload-alt text-amber-600 mt-0.5"></i><div><strong>Sincronización en la nube pendiente.</strong><p class="mt-0.5">Configura <code>firebase-config.js</code> para que los clientes y Coach vean la misma información desde distintos dispositivos.</p></div></div>
+      </div>
+      <div class="absolute -top-10 -right-10 w-32 h-32 bg-red-600/10 rounded-full blur-2xl pointer-events-none"></div>
+      
+      <div class="text-center mb-8">
+        <div class="inline-flex items-center justify-center w-16 h-16 bg-zinc-900 rounded-2xl border border-zinc-800 mb-4 shadow-md">
+          <span id="loginLogo" class="contents"></span>
+          <svg class="w-10 h-10 text-red-600" viewBox="0 0 100 100" fill="currentColor">
+            <g transform="translate(50, 45)">
+              <path d="M 0 -22 C -10 -22 -15 -10 0 0 C 15 -10 10 -22 0 -22 Z" transform="rotate(0)" />
+              <path d="M 0 -22 C -10 -22 -15 -10 0 0 C 15 -10 10 -22 0 -22 Z" transform="rotate(72)" />
+              <path d="M 0 -22 C -10 -22 -15 -10 0 0 C 15 -10 10 -22 0 -22 Z" transform="rotate(144)" />
+              <path d="M 0 -22 C -10 -22 -15 -10 0 0 C 15 -10 10 -22 0 -22 Z" transform="rotate(216)" />
+              <path d="M 0 -22 C -10 -22 -15 -10 0 0 C 15 -10 10 -22 0 -22 Z" transform="rotate(288)" />
+            </g>
+            <path d="M 48 45 Q 46 75 35 88 Q 38 88 51 45 Z" fill="currentColor" />
+          </svg>
+        </div>
+        <h2 class="text-2xl font-black text-zinc-900">Ingreso Asesorados</h2>
+        <p class="text-xs text-zinc-500 mt-1 font-medium">Introduce el PIN de 6 dígitos otorgado por tu Coach Dave.</p>
+      </div>
+
+      <form onsubmit="handleClientLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-zinc-600 mb-2">Código de Acceso (PIN)</label>
+          <div class="relative">
+            <input type="password" id="clientPinInput" maxlength="6" placeholder="• • • • • •" required
+              class="w-full bg-zinc-50 border border-zinc-300 text-zinc-900 text-center text-2xl tracking-[0.4em] font-mono rounded-xl py-3 px-4 focus:outline-none focus:border-red-600 focus:ring-2 focus:ring-red-600/20 transition">
+            <button type="button" onclick="togglePinVisibility('clientPinInput', 'pinEyeIcon')" class="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-700">
+              <i id="pinEyeIcon" class="fas fa-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="w-full py-3.5 px-4 bg-red-600 hover:bg-red-700 text-white font-extrabold rounded-xl shadow-lg shadow-red-600/20 transition flex items-center justify-center gap-2">
+          <span>ACCEDER A MI PLAN (30 DÍAS)</span>
+          <i class="fas fa-arrow-right text-xs"></i>
+        </button>
+      </form>
+
+      <div class="mt-8 pt-6 border-t border-zinc-200 text-center">
+        <p class="text-xs text-zinc-500 font-medium">¿No tienes PIN o necesitas renovar tu plan mensual?</p>
+        <a href="https://instagram.com/dve_mx" target="_blank" class="inline-flex items-center gap-1.5 text-xs text-red-600 hover:text-red-700 font-bold mt-1 transition">
+          <i class="fab fa-instagram text-base"></i>
+          <span>Contacta a @dve_mx</span>
+        </a>
+      </div>
+    </section>
+
+    <section id="clientDashboardView" class="hidden space-y-6">
+      
+      <!-- Client Header Banner -->
+      <div class="bg-white border border-zinc-200 rounded-2xl p-5 md:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm">
+        <div class="flex items-center gap-4">
+          <div class="w-14 h-14 bg-red-600 text-white rounded-2xl flex items-center justify-center text-2xl font-black shadow-md">
+            <span id="clientAvatarInitials">A</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h2 id="clientWelcomeName" class="text-xl md:text-2xl font-black text-zinc-900">Hola, Alumno</h2>
+              <span id="clientStatusBadge" class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">30 DÍAS ACTIVO</span>
+            </div>
+            <p class="text-xs text-zinc-500 font-medium mt-0.5">Plan de Entrenamiento Mensual por <strong class="text-zinc-900">Dave</strong></p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4 w-full md:w-auto justify-between border-t md:border-t-0 border-zinc-200 pt-3 md:pt-0">
+          <!-- Days Remaining Badge -->
+          <div class="bg-zinc-50 border border-zinc-200 px-4 py-2 rounded-xl text-center">
+            <span class="text-[10px] text-zinc-500 font-bold uppercase block">Días Restantes</span>
+            <span id="daysRemainingCount" class="text-lg font-black text-zinc-900">30</span>
+            <span class="text-[10px] text-zinc-500 font-semibold"> / 30d</span>
+          </div>
+
+          <!-- Total Adherence Badge -->
+          <div class="bg-zinc-50 border border-zinc-200 px-4 py-2 rounded-xl text-center">
+            <span class="text-[10px] text-zinc-500 font-bold uppercase block">Cumplimiento</span>
+            <span id="clientAdherenceScore" class="text-lg font-black text-red-600">100%</span>
+          </div>
+
+          <button onclick="logout()" class="p-2.5 bg-zinc-100 hover:bg-zinc-200 text-zinc-700 rounded-xl transition border border-zinc-200" title="Cerrar Sesión">
+            <i class="fas fa-sign-out-alt"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Coach Notes Alert (If Any) -->
+      <div id="coachNotesBox" class="hidden bg-red-50 border border-red-200 rounded-2xl p-4 flex items-start gap-3 shadow-sm">
+        <i class="fas fa-comment-dots text-red-600 text-xl mt-0.5"></i>
+        <div>
+          <h4 class="text-xs font-bold uppercase text-red-700">Instrucción Especial de Dave:</h4>
+          <p id="coachNotesContent" class="text-sm font-semibold text-zinc-800 mt-0.5">¡A darlo todo!</p>
+        </div>
+      </div>
+
+      <div class="space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-zinc-600 uppercase tracking-wider">Seleccionar Día de Entreno</span>
+          
+          <!-- Reponer Día Button -->
+          <button onclick="openMakeupModal()" class="text-xs font-bold px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 rounded-xl transition flex items-center gap-1.5 shadow-sm">
+            <i class="fas fa-history text-amber-600"></i>
+            <span>¿Faltaste un día? Reponer aquí</span>
+          </button>
+          <button onclick="openReportModal()" class="text-xs font-bold px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-xl transition flex items-center gap-1.5 shadow-sm">
+            <i class="fas fa-file-medical text-red-600"></i>
+            <span>INFORME</span>
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+          <button onclick="selectDay('Lunes')" class="day-btn flex-1 min-w-[90px] py-3 px-3 bg-white hover:bg-zinc-50 border border-zinc-200 rounded-xl text-xs font-bold text-zinc-600 transition text-center shadow-sm" data-day="Lunes">LUNES</button>
+          <button onclick="selectDay('Martes')" class="day-btn flex-1 min-w-[90px] py-3 px-3 bg-white hover:bg-zinc-50 border border-zinc-200 rounded-xl text-xs font-bold text-zinc-600 transition text-center shadow-sm" data-day="Martes">MARTES</button>
+          <button onclick="selectDay('Miércoles')" class="day-btn flex-1 min-w-[90px] py-3 px-3 bg-white hover:bg-zinc-50 border border-zinc-200 rounded-xl text-xs font-bold text-zinc-600 transition text-center shadow-sm" data-day="Miércoles">MIÉRCOLES</button>
+          <button onclick="selectDay('Jueves')" class="day-btn flex-1 min-w-[90px] py-3 px-3 bg-white hover:bg-zinc-50 border border-zinc-200 rounded-xl text-xs font-bold text-zinc-600 transition text-center shadow-sm" data-day="Jueves">JUEVES</button>
+          <button onclick="selectDay('Viernes')" class="day-btn flex-1 min-w-[90px] py-3 px-3 bg-white hover:bg-zinc-50 border border-zinc-200 rounded-xl text-xs font-bold text-zinc-600 transition text-center shadow-sm" data-day="Viernes">VIERNES</button>
+          <button onclick="selectDay('Sábado')" class="day-btn flex-1 min-w-[90px] py-3 px-3 bg-white hover:bg-zinc-50 border border-zinc-200 rounded-xl text-xs font-bold text-zinc-600 transition text-center shadow-sm" data-day="Sábado">SÁBADO</button>
+          <button onclick="selectDay('Domingo')" class="day-btn flex-1 min-w-[90px] py-3 px-3 bg-white hover:bg-zinc-50 border border-zinc-200 rounded-xl text-xs font-bold text-zinc-600 transition text-center shadow-sm" data-day="Domingo">DOMINGO</button>
+        </div>
+      </div>
+
+      <!-- Make-Up Status Banner if active -->
+      <div id="makeupBanner" class="hidden bg-amber-50 border border-amber-300 rounded-xl p-3 flex items-center justify-between text-xs text-amber-900 shadow-sm">
+        <div class="flex items-center gap-2">
+          <i class="fas fa-exclamation-triangle text-amber-600"></i>
+          <span id="makeupBannerText">Modo <strong>Reponiendo Día Perdido</strong>: selecciona el entrenamiento que estás recuperando. Los ejercicios marcados sumarán <strong>75% de puntos</strong> en tu ranking.</span>
+        </div>
+        <button onclick="exitMakeupMode()" class="text-amber-800 underline font-bold">Cancelar</button>
+      </div>
+
+      <!-- Exercise List Header -->
+      <div class="flex items-center justify-between pt-2">
+        <h3 class="text-lg font-extrabold text-zinc-900 flex items-center gap-2">
+          <span id="currentDayTitle" class="text-red-600 uppercase">LUNES</span> 
+          <span class="text-zinc-400 text-sm font-normal">| Rutina Mensual</span>
+        </h3>
+        <span id="exerciseCountBadge" class="text-xs font-bold px-3 py-1 bg-white border border-zinc-200 text-zinc-700 rounded-full shadow-sm">0 Ejercicios</span>
+      </div>
+
+      <div id="exerciseCardsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- FINALIZAR ENTRENAMIENTO -->
+      <div id="trainingCompletionBox" class="bg-white border border-zinc-200 rounded-2xl p-4 shadow-sm">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div>
+            <h3 class="text-sm font-black text-zinc-900 flex items-center gap-2">
+              <i class="fas fa-flag-checkered text-red-600"></i>
+              FINALIZACIÓN DEL ENTRENAMIENTO
+            </h3>
+            <p id="trainingCompletionStatus" class="text-xs text-zinc-500 mt-1">Cuando termines, pulsa el botón para registrar oficialmente el día y la fecha real.</p>
+          </div>
+          <button id="finishTrainingBtn" onclick="finishTrainingSession()" class="w-full sm:w-auto py-2.5 px-5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black rounded-xl shadow-md transition flex items-center justify-center gap-2">
+            <i class="fas fa-check-circle"></i>
+            <span>FINALIZAR ENTRENAMIENTO</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- CARDIO TRACKER SECTION -->
+      <div class="bg-white border border-zinc-200 rounded-2xl p-6 shadow-sm space-y-4">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div>
+            <h3 class="text-lg font-black text-zinc-900 flex items-center gap-2">
+              <i class="fas fa-running text-red-600"></i>
+              <span>REGISTRO DE CARDIO</span>
+            </h3>
+            <p class="text-xs text-zinc-500 font-medium">Registra tus sesiones de cardio (caminadora, stairmaster, bicicleta, etc.) y tiempo realizado.</p>
+          </div>
+
+          <button onclick="openAddCardioModal()" class="py-2 px-4 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-xl shadow-md transition flex items-center gap-1.5">
+            <i class="fas fa-plus"></i>
+            <span>REGISTRAR CARDIO</span>
+          </button>
+        </div>
+
+        <div id="cardioLogList" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- LEADERBOARD SECTION -->
+      <div class="bg-white border border-zinc-200 rounded-2xl p-6 shadow-sm">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h3 class="text-lg font-black text-zinc-900 flex items-center gap-2">
+              <i class="fas fa-trophy text-amber-500"></i>
+              <span>TABLA DE CLASIFICACIÓN DAVE TEAM</span>
+            </h3>
+            <p class="text-xs text-zinc-500 font-medium">¡El 100% de cumplimiento a tiempo te mantiene en el Top 1!</p>
+          </div>
+          <span class="text-xs bg-red-50 text-red-600 border border-red-200 px-3 py-1 rounded-full font-extrabold">TOP ATLETAS</span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-zinc-200 text-[11px] font-bold text-zinc-500 uppercase tracking-wider">
+                <th class="pb-3 px-3">Puesto</th>
+                <th class="pb-3 px-3">Atleta</th>
+                <th class="pb-3 px-3 text-center">Cumplimiento</th>
+                <th class="pb-3 px-3 text-right">Días Plan</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboardTbody" class="divide-y divide-zinc-100 text-sm">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="coachDashboardView" class="hidden space-y-6">
+      
+      <!-- Coach Header & Statistics -->
+      <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-white">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-0.5 bg-red-600 text-white font-black text-[10px] rounded-md uppercase tracking-widest">COACH PANEL</span>
+            <h2 class="text-2xl font-black text-white">Dave | Admin Dashboard</h2>
+          </div>
+          <p class="text-xs text-zinc-400 mt-1">Gestión de planes de 30 días, revisión de avances de entrenamientos y cardio de alumnos.</p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <button onclick="openAddClientModal()" class="py-2.5 px-4 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-xl shadow-lg transition flex items-center gap-2">
+            <i class="fas fa-user-plus"></i>
+            <span>NUEVO ALUMNO</span>
+          </button>
+
+          <button onclick="exportData()" class="py-2.5 px-3 bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold rounded-xl transition" title="Exportar respaldo"><i class="fas fa-download"></i></button>
+          <label class="py-2.5 px-3 bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-bold rounded-xl transition cursor-pointer" title="Importar respaldo"><i class="fas fa-upload"></i><input type="file" accept="application/json" class="hidden" onchange="importDataFromFile(this.files[0])"></label>
+
+          <button onclick="logout()" class="p-2.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white rounded-xl transition" title="Salir de Coach">
+            <i class="fas fa-sign-out-alt"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Coach Stats Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div class="bg-white border border-zinc-200 p-4 rounded-xl flex items-center justify-between shadow-sm">
+          <div>
+            <span class="text-xs text-zinc-500 font-bold uppercase block">Alumnos Totales</span>
+            <span id="statTotalClients" class="text-2xl font-black text-zinc-900">0</span>
+          </div>
+          <div class="w-10 h-10 bg-zinc-100 rounded-xl flex items-center justify-center text-zinc-700">
+            <i class="fas fa-users"></i>
+          </div>
+        </div>
+
+        <div class="bg-white border border-zinc-200 p-4 rounded-xl flex items-center justify-between shadow-sm">
+          <div>
+            <span class="text-xs text-zinc-500 font-bold uppercase block">Alumnos Activos (30d)</span>
+            <span id="statActiveClients" class="text-2xl font-black text-emerald-600">0</span>
+          </div>
+          <div class="w-10 h-10 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-center text-emerald-600">
+            <i class="fas fa-user-check"></i>
+          </div>
+        </div>
+
+        <div class="bg-white border border-zinc-200 p-4 rounded-xl flex items-center justify-between shadow-sm">
+          <div>
+            <span class="text-xs text-zinc-500 font-bold uppercase block">Promedio Cumplimiento</span>
+            <span id="statAvgAdherence" class="text-2xl font-black text-red-600">0%</span>
+          </div>
+          <div class="w-10 h-10 bg-red-50 border border-red-200 rounded-xl flex items-center justify-center text-red-600">
+            <i class="fas fa-chart-line"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white border border-zinc-200 rounded-2xl p-6 shadow-sm">
+        <h3 class="text-lg font-black text-zinc-900 mb-4 flex items-center gap-2">
+          <i class="fas fa-users-cog text-red-600"></i>
+          <span>Gestión de Asesorados Dave Team</span>
+        </h3>
+
+        <div id="coachClientsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- MODAL 1: COACH PIN ACCESS MODAL -->
+  <div id="coachLoginModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white border border-zinc-200 rounded-2xl max-w-sm w-full p-6 shadow-2xl relative">
+      <button onclick="closeModal('coachLoginModal')" class="absolute top-4 right-4 text-zinc-400 hover:text-zinc-800">
+        <i class="fas fa-times"></i>
+      </button>
+
+      <div class="text-center mb-6">
+        <div class="w-12 h-12 bg-red-50 border border-red-200 rounded-xl flex items-center justify-center text-red-600 text-xl mx-auto mb-3">
+          <i class="fas fa-lock"></i>
+        </div>
+        <h3 class="text-xl font-black text-zinc-900">Acceso Coach Dave</h3>
+        <p class="text-xs text-zinc-500 font-medium mt-1">Introduce la clave maestra de administrador.</p>
+      </div>
+
+      <form onsubmit="handleCoachLogin(event)" class="space-y-4">
+        <div>
+          <input type="password" id="coachPinInput" placeholder="PIN de Coach" maxlength="10" required
+            class="w-full bg-zinc-50 border border-zinc-300 text-zinc-900 text-center font-mono text-xl rounded-xl py-3 px-4 focus:outline-none focus:border-red-600">
+        </div>
+        <button type="submit" class="w-full py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition">
+          ENTRAR A PANEL
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 2: ADD NEW CLIENT MODAL -->
+  <div id="addClientModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white border border-zinc-200 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+      <button onclick="closeModal('addClientModal')" class="absolute top-4 right-4 text-zinc-400 hover:text-zinc-800">
+        <i class="fas fa-times"></i>
+      </button>
+
+      <h3 class="text-xl font-black text-zinc-900 mb-4 flex items-center gap-2">
+        <i class="fas fa-user-plus text-red-600"></i>
+        <span>Agregar Nuevo Asesorado</span>
+      </h3>
+
+      <form onsubmit="handleAddClientSubmit(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-zinc-600 mb-1">Nombre Completo del Alumno</label>
+          <input type="text" id="newClientName" placeholder="Ej. Alex Rivera" required
+            class="w-full bg-zinc-50 border border-zinc-300 text-zinc-900 rounded-xl py-2.5 px-3 text-sm focus:outline-none focus:border-red-600">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-zinc-600 mb-1">Código PIN de Acceso (6 dígitos)</label>
+          <input type="text" id="newClientPin" placeholder="Ej. 123456" maxlength="6" required pattern="[0-9]{6}"
+            class="w-full bg-zinc-50 border border-zinc-300 text-zinc-900 rounded-xl py-2.5 px-3 text-sm font-mono tracking-widest focus:outline-none focus:border-red-600">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-zinc-600 mb-1">Días restantes del plan</label>
+          <input type="number" id="newClientDaysRemaining" min="1" max="30" value="30" required
+            class="w-full bg-zinc-50 border border-zinc-300 text-zinc-900 rounded-xl py-2.5 px-3 text-sm font-mono focus:outline-none focus:border-red-600">
+          <p class="text-[10px] text-zinc-500 mt-1">Puedes poner de 1 a 30 días. Ejemplo: si ya te quedan 20 días, escribe <strong>20</strong>.</p>
+        </div>
+
+        <div class="p-3 bg-zinc-50 border border-zinc-200 rounded-xl text-xs text-zinc-600 font-medium">
+          <i class="fas fa-info-circle text-red-600 mr-1"></i> El plan se calculará con la cantidad de días restantes que indiques; la rutina seguirá funcionando durante todo ese periodo.
+        </div>
+
+        <button type="submit" class="w-full py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition">
+          CREAR ALUMNO
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: AJUSTAR DÍAS RESTANTES -->
+  <div id="adjustDaysModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white border border-zinc-200 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+      <button onclick="closeModal('adjustDaysModal')" class="absolute top-4 right-4 text-zinc-400 hover:text-zinc-800" aria-label="Cerrar">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="text-center mb-6">
+        <div class="w-14 h-14 bg-amber-50 border border-amber-200 rounded-2xl flex items-center justify-center text-amber-600 text-2xl mx-auto mb-3">
+          <i class="fas fa-calendar-day"></i>
+        </div>
+        <h3 class="text-xl font-black text-zinc-900">Ajustar días restantes</h3>
+        <p id="adjustDaysSubtitle" class="text-xs text-zinc-500 font-medium mt-1">Define cuántos días le quedan al alumno de su plan actual.</p>
+      </div>
+      <form onsubmit="handleAdjustDaysSubmit(event)" class="space-y-4">
+        <input type="hidden" id="adjustDaysClientId">
+        <div>
+          <label class="block text-xs font-bold text-zinc-600 mb-1">Días restantes (1 a 30)</label>
+          <input type="number" id="adjustDaysInput" min="1" max="30" required
+            class="w-full bg-zinc-50 border border-zinc-300 text-zinc-900 text-center text-2xl font-black rounded-xl py-3 px-4 focus:outline-none focus:border-red-600">
+        </div>
+        <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 font-medium">
+          <i class="fas fa-info-circle mr-1"></i> Esto ajusta únicamente el plan <strong>actual</strong>. Los planes anteriores y sus registros históricos no se modifican.
+        </div>
+        <button type="submit" class="w-full py-3 bg-red-600 hover:bg-red-700 text-white font-black rounded-xl transition shadow-md">
+          GUARDAR DÍAS RESTANTES
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 3: EDIT ROUTINE MODAL -->
+  <div id="editRoutineModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white border border-zinc-200 rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl relative">
+      
+      <!-- Modal Header -->
+      <div class="p-5 border-b border-zinc-200 flex items-center justify-between">
+        <div>
+          <h3 id="routineModalClientName" class="text-xl font-black text-zinc-900">Editar Rutina Mensual</h3>
+          <p class="text-xs text-zinc-500 font-medium">Configura los ejercicios por grupo muscular para cada día de la semana.</p>
+        </div>
+        <button onclick="closeModal('editRoutineModal')" class="text-zinc-400 hover:text-zinc-800">
+          <i class="fas fa-times text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Days Tab Selector inside Modal -->
+      <div class="px-5 pt-3 border-b border-zinc-200 flex gap-2 overflow-x-auto scrollbar-none bg-zinc-50">
+        <button onclick="selectRoutineModalDay('Lunes')" class="routine-day-tab px-3 py-2 text-xs font-bold text-zinc-500 border-b-2 border-transparent" data-day="Lunes">LUNES</button>
+        <button onclick="selectRoutineModalDay('Martes')" class="routine-day-tab px-3 py-2 text-xs font-bold text-zinc-500 border-b-2 border-transparent" data-day="Martes">MARTES</button>
+        <button onclick="selectRoutineModalDay('Miércoles')" class="routine-day-tab px-3 py-2 text-xs font-bold text-zinc-500 border-b-2 border-transparent" data-day="Miércoles">MIÉRCOLES</button>
+        <button onclick="selectRoutineModalDay('Jueves')" class="routine-day-tab px-3 py-2 text-xs font-bold text-zinc-500 border-b-2 border-transparent" data-day="Jueves">JUEVES</button>
+        <button onclick="selectRoutineModalDay('Viernes')" class="routine-day-tab px-3 py-2 text-xs font-bold text-zinc-500 border-b-2 border-transparent" data-day="Viernes">VIERNES</button>
+        <button onclick="selectRoutineModalDay('Sábado')" class="routine-day-tab px-3 py-2 text-xs font-bold text-zinc-500 border-b-2 border-transparent" data-day="Sábado">SÁBADO</button>
+        <button onclick="selectRoutineModalDay('Domingo')" class="routine-day-tab px-3 py-2 text-xs font-bold text-zinc-500 border-b-2 border-transparent" data-day="Domingo">DOMINGO</button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-5 overflow-y-auto space-y-6 flex-grow">
+        
+        <!-- Add Exercise Form -->
+        <div class="bg-zinc-50 border border-zinc-200 rounded-xl p-4">
+          <h4 class="text-xs font-bold text-red-600 uppercase tracking-wider mb-3">Añadir Ejercicio al Día</h4>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            
+            <!-- Category Group Filter -->
+            <div class="sm:col-span-2">
+              <label class="block text-[11px] text-zinc-600 font-bold mb-1">1. Filtrar por Grupo Muscular</label>
+              <select id="modalMuscleCategoryFilter" onchange="filterCatalogByMuscle(this.value)" class="w-full bg-white border border-zinc-300 text-zinc-900 text-xs rounded-lg p-2.5 focus:border-red-600">
+                <option value="ALL">-- Ver Todos los Grupos Musculares --</option>
+                <option value="Cuádriceps">Cuádriceps</option>
+                <option value="Femoral / Isquiotibiales">Femoral / Isquiotibiales</option>
+                <option value="Glúteos">Glúteos</option>
+                <option value="Pantorrillas">Pantorrillas</option>
+                <option value="Abductores / Aductores">Abductores / Aductores</option>
+                <option value="Pecho">Pecho</option>
+                <option value="Espalda">Espalda</option>
+                <option value="Hombros">Hombros</option>
+                <option value="Bíceps">Bíceps</option>
+                <option value="Tríceps">Tríceps</option>
+                <option value="Abdomen / Core">Abdomen / Core</option>
+              </select>
+            </div>
+
+            <!-- Catalog Selector -->
+            <div class="sm:col-span-2">
+              <label class="block text-[11px] text-zinc-600 font-bold mb-1">2. Seleccionar Ejercicio de Gimnasio</label>
+              <select id="modalCatalogSelect" onchange="handleCatalogSelectChange(this)" class="w-full bg-white border border-zinc-300 text-zinc-900 text-xs rounded-lg p-2.5 focus:border-red-600">
+                <option value="">-- Elige un Ejercicio --</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-[11px] text-zinc-600 font-bold mb-1">Nombre del Ejercicio</label>
+              <input type="text" id="modalExName" placeholder="Ej. Sentadilla Hack" required class="w-full bg-white border border-zinc-300 text-zinc-900 text-xs rounded-lg p-2.5">
+            </div>
+
+            <div>
+              <label class="block text-[11px] text-zinc-600 font-bold mb-1">Categoría / Grupo Muscular</label>
+              <input type="text" id="modalExCategory" placeholder="Ej. Cuádriceps" class="w-full bg-white border border-zinc-300 text-zinc-900 text-xs rounded-lg p-2.5">
+            </div>
+
+            <div>
+              <label class="block text-[11px] text-zinc-600 font-bold mb-1">Número de Series</label>
+              <input type="number" id="modalExSets" value="4" min="1" max="10" class="w-full bg-white border border-zinc-300 text-zinc-900 text-xs rounded-lg p-2.5">
+            </div>
+
+            <div>
+              <label class="block text-[11px] text-zinc-600 font-bold mb-1">Rango de Repeticiones</label>
+              <input type="text" id="modalExReps" value="10-12" placeholder="Ej. 10-12" class="w-full bg-white border border-zinc-300 text-zinc-900 text-xs rounded-lg p-2.5">
+            </div>
+
+            <div class="sm:col-span-2">
+              <label class="block text-[11px] text-zinc-600 font-bold mb-1">URL de Imagen de Demostración</label>
+              <input type="url" id="modalExImg" placeholder="https://..." class="w-full bg-white border border-zinc-300 text-zinc-900 text-xs rounded-lg p-2.5">
+            </div>
+          </div>
+
+          <button onclick="handleAddExerciseToRoutine()" class="mt-4 w-full py-2.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-lg transition shadow-sm">
+            <i class="fas fa-plus mr-1"></i> AÑADIR EJERCICIO AL PLAN
+          </button>
+        </div>
+
+        <!-- Current Day Exercises List -->
+        <div>
+          <h4 class="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-3">Ejercicios Asignados para <span id="modalCurrentDayText" class="text-zinc-900">LUNES</span></h4>
+          <div id="modalRoutineExercisesList" class="space-y-2">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+      </div>
+
+      <div class="p-4 border-t border-zinc-200 flex justify-end bg-zinc-50">
+        <button onclick="closeModal('editRoutineModal')" class="py-2 px-5 bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-bold rounded-xl transition">
+          LISTO / GUARDAR PLAN
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL: RENOVACIÓN DE PLAN -->
+  <div id="renewPlanModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white border border-zinc-200 rounded-2xl max-w-xl w-full p-6 shadow-2xl relative">
+      <button onclick="closeModal('renewPlanModal')" class="absolute top-4 right-4 text-zinc-400 hover:text-zinc-800" aria-label="Cerrar">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="text-center mb-6">
+        <div class="w-14 h-14 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-center justify-center text-emerald-600 text-2xl mx-auto mb-3">
+          <i class="fas fa-sync-alt"></i>
+        </div>
+        <h3 class="text-xl font-black text-zinc-900">¿Qué quieres hacer con la rutina anterior?</h3>
+        <p id="renewPlanSubtitle" class="text-xs text-zinc-500 font-medium mt-1">El plan anterior se archivará y jamás se modificará.</p>
+      </div>
+
+      <div class="space-y-3">
+        <button onclick="confirmRenewPlan('keep')" class="w-full text-left p-4 bg-white hover:bg-emerald-50 border border-zinc-200 hover:border-emerald-300 rounded-2xl transition group">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0"><i class="fas fa-copy"></i></div>
+            <div>
+              <h4 class="text-sm font-black text-zinc-900">Opción 1 — Mantener rutina</h4>
+              <p class="text-xs text-zinc-500 mt-1">Copia exactamente los mismos ejercicios, series, repeticiones, RIR, peso y demás configuraciones al nuevo plan.</p>
+            </div>
+          </div>
+        </button>
+
+        <button onclick="confirmRenewPlan('update')" class="w-full text-left p-4 bg-white hover:bg-amber-50 border border-zinc-200 hover:border-amber-300 rounded-2xl transition group">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0"><i class="fas fa-edit"></i></div>
+            <div>
+              <h4 class="text-sm font-black text-zinc-900">Opción 2 — Actualizar rutina</h4>
+              <p class="text-xs text-zinc-500 mt-1">Copia la rutina anterior al nuevo plan para que puedas modificar ejercicios, series, repeticiones, RIR, peso y configuraciones.</p>
+            </div>
+          </div>
+        </button>
+
+        <button onclick="confirmRenewPlan('new')" class="w-full text-left p-4 bg-white hover:bg-red-50 border border-zinc-200 hover:border-red-300 rounded-2xl transition group">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center shrink-0"><i class="fas fa-plus"></i></div>
+            <div>
+              <h4 class="text-sm font-black text-zinc-900">Opción 3 — Nueva rutina</h4>
+              <p class="text-xs text-zinc-500 mt-1">Crea el nuevo plan sin ejercicios para que armes la rutina completamente desde cero.</p>
+            </div>
+          </div>
+        </button>
+      </div>
+
+      <div class="mt-5 p-3 bg-zinc-50 border border-zinc-200 rounded-xl text-[11px] text-zinc-600 font-medium">
+        <i class="fas fa-lock text-zinc-500 mr-1"></i> El plan anterior, sus ejercicios y sus registros permanecerán archivados como historial de solo lectura.
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: HISTORIAL DE PLANES -->
+  <div id="routineHistoryModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white border border-zinc-200 rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl relative">
+      <div class="p-5 border-b border-zinc-200 flex items-center justify-between bg-zinc-900 text-white rounded-t-2xl">
+        <div>
+          <span class="text-[10px] font-bold text-amber-400 uppercase tracking-widest">ARCHIVO</span>
+          <h3 id="routineHistoryTitle" class="text-xl font-black text-white">Historial de Planes</h3>
+        </div>
+        <button onclick="closeModal('routineHistoryModal')" class="text-zinc-400 hover:text-white">
+          <i class="fas fa-times text-lg"></i>
+        </button>
+      </div>
+      <div id="routineHistoryContent" class="p-5 overflow-y-auto space-y-4 flex-grow"></div>
+    </div>
+  </div>
+
+  <!-- MODAL 4: COACH VIEW STUDENT PROGRESS & CARDIO MODAL -->
+  <div id="viewProgressModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white border border-zinc-200 rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl relative">
+      
+      <div class="p-5 border-b border-zinc-200 flex items-center justify-between bg-zinc-900 text-white rounded-t-2xl">
+        <div>
+          <span class="text-[10px] font-bold text-red-500 uppercase tracking-widest">MONITOR DE ENTRENAMIENTO</span>
+          <h3 id="inspectorClientTitle" class="text-xl font-black text-white">Avances de Alumno</h3>
+        </div>
+        <button onclick="closeModal('viewProgressModal')" class="text-zinc-400 hover:text-white">
+          <i class="fas fa-times text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Inspector Nav Tabs -->
+      <div class="px-5 pt-3 border-b border-zinc-200 flex gap-2 overflow-x-auto scrollbar-none bg-zinc-50">
+        <button onclick="selectInspectorDay('Lunes')" class="inspector-day-tab px-3 py-2 text-xs font-bold text-zinc-500 border-b-2 border-transparent" data-iday="Lunes">LUNES</button>
+        <button onclick="selectInspectorDay('Martes')" class="inspector-day-tab px-3 py-2 text-xs font-bold text-zinc-500 border-b-2 border-transparent" data-iday="Martes">MARTES</button>
+        <button onclick="selectInspectorDay('Miércoles')" class="inspector-day-tab px-3 py-2 text-xs font-bold text-zinc-500 border-b-2 border-transparent" data-iday="Miércoles">MIÉRCOLES</button>
+        <button onclick="selectInspectorDay('Jueves')" class="inspector-day-tab px-3 py-2 text-xs font-bold text-zinc-500 border-b-2 border-transparent" data-iday="Jueves">JUEVES</button>
+        <button onclick="selectInspectorDay('Viernes')" class="inspector-day-tab px-3 py-2 text-xs font-bold text-zinc-500 border-b-2 border-transparent" data-iday="Viernes">VIERNES</button>
+        <button onclick="selectInspectorDay('Sábado')" class="inspector-day-tab px-3 py-2 text-xs font-bold text-zinc-500 border-b-2 border-transparent" data-iday="Sábado">SÁBADO</button>
+        <button onclick="selectInspectorDay('Domingo')" class="inspector-day-tab px-3 py-2 text-xs font-bold text-zinc-500 border-b-2 border-transparent" data-iday="Domingo">DOMINGO</button>
+        <button onclick="selectInspectorDay('Cardio')" class="inspector-day-tab px-3 py-2 text-xs font-bold text-red-600 border-b-2 border-transparent" data-iday="Cardio">🏃‍♂️ CARDIO</button>
+      </div>
+
+      <div class="p-5 overflow-y-auto space-y-4 flex-grow">
+        <div id="inspectorContentArea">
+          <!-- Dynamically filled with student workout details -->
+        </div>
+      </div>
+
+      <div class="p-4 border-t border-zinc-200 flex justify-end bg-zinc-50">
+        <button onclick="closeModal('viewProgressModal')" class="py-2 px-5 bg-zinc-900 text-white text-xs font-bold rounded-xl">Cerrar Visor</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL 5: EDIT CLIENT PIN MODAL -->
+  <div id="editPinModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white border border-zinc-200 rounded-2xl max-w-sm w-full p-6 shadow-2xl relative">
+      <button onclick="closeModal('editPinModal')" class="absolute top-4 right-4 text-zinc-400 hover:text-zinc-800">
+        <i class="fas fa-times"></i>
+      </button>
+
+      <div class="text-center mb-5">
+        <div class="w-12 h-12 bg-red-50 border border-red-200 rounded-xl flex items-center justify-center text-red-600 text-xl mx-auto mb-2">
+          <i class="fas fa-key"></i>
+        </div>
+        <h3 class="text-xl font-black text-zinc-900">Cambiar PIN</h3>
+        <p id="editPinModalSubtitle" class="text-xs text-zinc-500 font-medium mt-1">Modificar código de acceso de alumno.</p>
+      </div>
+
+      <form onsubmit="handleSaveClientPin(event)" class="space-y-4">
+        <input type="hidden" id="editPinClientId">
+        <div>
+          <label class="block text-xs font-bold text-zinc-600 mb-1">Nuevo Código PIN (6 dígitos)</label>
+          <input type="text" id="editPinInput" maxlength="6" required pattern="[0-9]{6}"
+            class="w-full bg-zinc-50 border border-zinc-300 text-zinc-900 text-center font-mono text-xl tracking-widest rounded-xl py-2.5 px-3 focus:outline-none focus:border-red-600">
+        </div>
+
+        <button type="submit" class="w-full py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition shadow-md">
+          GUARDAR NUEVO PIN
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 6: MAKEUP DAY MODAL -->
+  <div id="makeupModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white border border-zinc-200 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+      <button onclick="closeModal('makeupModal')" class="absolute top-4 right-4 text-zinc-400 hover:text-zinc-800">
+        <i class="fas fa-times"></i>
+      </button>
+
+      <div class="text-center mb-4">
+        <div class="w-12 h-12 bg-amber-50 border border-amber-200 rounded-xl flex items-center justify-center text-amber-600 text-xl mx-auto mb-2">
+          <i class="fas fa-history"></i>
+        </div>
+        <h3 class="text-xl font-black text-zinc-900">Reponer Día Perdido</h3>
+        <p class="text-xs text-zinc-500 font-medium">Selecciona el día que no pudiste entrenar durante la semana para realizarlo hoy.</p>
+      </div>
+
+      <div class="space-y-3">
+        <label class="block text-xs font-bold text-zinc-600 uppercase">¿Qué día quieres reponer?</label>
+        <select id="makeupDaySelect" class="w-full bg-zinc-50 border border-zinc-300 text-zinc-900 rounded-xl py-3 px-3 text-sm focus:border-amber-500 focus:outline-none">
+          <option value="Lunes">Lunes</option>
+          <option value="Martes">Martes</option>
+          <option value="Miércoles">Miércoles</option>
+          <option value="Jueves">Jueves</option>
+          <option value="Viernes">Viernes</option>
+        </select>
+
+        <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 space-y-1 font-medium">
+          <p><strong>Nota de Puntuación:</strong> Reponer entrenamientos otorga el <strong>75% de los puntos</strong>. ¡Sigue dando tu máximo esfuerzo!</p>
+        </div>
+
+        <button onclick="confirmMakeupDay()" class="w-full py-3 bg-amber-500 hover:bg-amber-600 text-zinc-950 font-extrabold rounded-xl transition shadow-md">
+          ACTIVAR MODO REPONER DÍA
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 7: ADD CARDIO LOG MODAL -->
+  <div id="addCardioModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white border border-zinc-200 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+      <button onclick="closeModal('addCardioModal')" class="absolute top-4 right-4 text-zinc-400 hover:text-zinc-800">
+        <i class="fas fa-times"></i>
+      </button>
+
+      <h3 class="text-xl font-black text-zinc-900 mb-4 flex items-center gap-2">
+        <i class="fas fa-running text-red-600"></i>
+        <span>Registrar Cardio</span>
+      </h3>
+
+      <form onsubmit="handleCardioSubmit(event)" class="space-y-4">
+        <div class="p-3 bg-zinc-50 border border-zinc-200 rounded-xl">
+          <span class="block text-[10px] font-bold text-zinc-500 uppercase">Cardio vinculado al entrenamiento</span>
+          <strong id="cardioLinkedTraining" class="block text-sm text-zinc-900 mt-1">Cargando día...</strong>
+          <span id="cardioLinkedDate" class="block text-[10px] text-zinc-500 mt-0.5"></span>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-zinc-600 mb-1">Tipo de Cardio / Máquina</label>
+          <select id="cardioTypeSelect" class="w-full bg-zinc-50 border border-zinc-300 text-zinc-900 rounded-xl py-2.5 px-3 text-xs">
+            <option value="Caminadora (Inclinación)">Caminadora (Inclinación)</option>
+            <option value="Escaladora (Stairmaster)">Escaladora (Stairmaster)</option>
+            <option value="Bicicleta Estática">Bicicleta Estática</option>
+            <option value="Eliptica">Eliptica</option>
+            <option value="Trote / Carrera Libre">Trote / Carrera Libre</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-zinc-600 mb-1">Tiempo Realizado (Minutos)</label>
+            <input type="number" id="cardioMinutesInput" min="1" max="180" value="30" required
+              class="w-full bg-zinc-50 border border-zinc-300 text-zinc-900 rounded-xl py-2.5 px-3 text-xs font-mono">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-zinc-600 mb-1">Distancia</label>
+            <input type="number" id="cardioDistanceInput" min="0" step="0.1" placeholder="Ej. 2.8"
+              class="w-full bg-zinc-50 border border-zinc-300 text-zinc-900 rounded-xl py-2.5 px-3 text-xs font-mono">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-zinc-600 mb-1">Calorías</label>
+            <input type="number" id="cardioCaloriesInput" min="0" step="1" placeholder="Opcional"
+              class="w-full bg-zinc-50 border border-zinc-300 text-zinc-900 rounded-xl py-2.5 px-3 text-xs font-mono">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-zinc-600 mb-1">Intensidad</label>
+            <select id="cardioIntensityInput" class="w-full bg-zinc-50 border border-zinc-300 text-zinc-900 rounded-xl py-2.5 px-3 text-xs">
+              <option value="Suave">Suave</option><option value="Moderada" selected>Moderada</option><option value="Alta">Alta</option><option value="Muy alta">Muy alta</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-zinc-600 mb-1">Notas</label>
+          <textarea id="cardioNotesInput" rows="2" placeholder="Lo que realmente realizaste..."
+            class="w-full bg-zinc-50 border border-zinc-300 text-zinc-900 rounded-xl py-2.5 px-3 text-xs"></textarea>
+        </div>
+
+        <button type="submit" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-xl transition shadow-md flex items-center justify-center gap-2">
+          <i class="fas fa-check"></i>
+          MARCAR CARDIO COMO REALIZADO
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 8: INFORME DEL CLIENTE -->
+  <div id="reportModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white border border-zinc-200 rounded-2xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl relative">
+      <div class="p-5 border-b border-zinc-200 flex items-center justify-between">
+        <div>
+          <span class="text-[10px] font-black text-red-600 uppercase tracking-widest">SEGUIMIENTO</span>
+          <h3 class="text-xl font-black text-zinc-900">Informe semanal</h3>
+          <p class="text-xs text-zinc-500 font-medium mt-1">Tus respuestas se guardan con fecha y plan para que Dave pueda revisarlas.</p>
+        </div>
+        <button onclick="closeModal('reportModal')" class="text-zinc-400 hover:text-zinc-800"><i class="fas fa-times"></i></button>
+      </div>
+      <form id="reportForm" onsubmit="handleReportSubmit(event)" class="p-5 overflow-y-auto space-y-4 flex-grow">
+        <div class="bg-zinc-50 border border-zinc-200 rounded-xl p-3 text-xs">
+          <span class="font-bold text-zinc-500 uppercase">Periodo</span>
+          <strong id="reportPeriodText" class="block text-zinc-900 mt-1">Semana actual</strong>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-zinc-700 mb-1">¿Cómo te sentiste esta semana?</label>
+          <textarea id="reportFeeling" required rows="3" class="w-full bg-zinc-50 border border-zinc-300 rounded-xl p-3 text-sm" placeholder="Cuéntame cómo te fue..."></textarea>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div><label class="block text-xs font-bold text-zinc-700 mb-1">¿Cómo estuvo tu energía?</label><select id="reportEnergy" required class="w-full bg-zinc-50 border border-zinc-300 rounded-xl p-2.5 text-sm"><option value="">Selecciona</option><option>Muy baja</option><option>Baja</option><option>Normal</option><option>Buena</option><option>Muy buena</option></select></div>
+          <div><label class="block text-xs font-bold text-zinc-700 mb-1">¿Cómo estuvo tu recuperación?</label><select id="reportRecovery" required class="w-full bg-zinc-50 border border-zinc-300 rounded-xl p-2.5 text-sm"><option value="">Selecciona</option><option>Muy mala</option><option>Mala</option><option>Normal</option><option>Buena</option><option>Muy buena</option></select></div>
+        </div>
+        <div><label class="block text-xs font-bold text-zinc-700 mb-1">¿Tuviste alguna molestia?</label><textarea id="reportDiscomfort" rows="2" class="w-full bg-zinc-50 border border-zinc-300 rounded-xl p-3 text-sm" placeholder="Describe dónde y cuándo la sentiste..."></textarea></div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div><label class="block text-xs font-bold text-zinc-700 mb-1">¿Qué ejercicio sentiste mejor?</label><input id="reportBestExercise" class="w-full bg-zinc-50 border border-zinc-300 rounded-xl p-2.5 text-sm" placeholder="Opcional"></div>
+          <div><label class="block text-xs font-bold text-zinc-700 mb-1">¿Qué ejercicio se te dificultó?</label><input id="reportHardExercise" class="w-full bg-zinc-50 border border-zinc-300 rounded-xl p-2.5 text-sm" placeholder="Opcional"></div>
+        </div>
+        <div><label class="block text-xs font-bold text-zinc-700 mb-1">Comentarios adicionales</label><textarea id="reportComments" rows="3" class="w-full bg-zinc-50 border border-zinc-300 rounded-xl p-3 text-sm" placeholder="Cualquier detalle que deba conocer Dave..."></textarea></div>
+        <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-900"><i class="fas fa-save mr-1"></i> El informe queda guardado como un registro independiente con fecha, semana y plan. No sustituye informes anteriores.</div>
+        <button id="reportSubmitBtn" type="submit" class="w-full py-3 bg-red-600 hover:bg-red-700 text-white font-black rounded-xl shadow-md transition"><i class="fas fa-paper-plane mr-1"></i> GUARDAR Y ENVIAR INFORME</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 9: VISOR DE INFORMES PARA COACH -->
+  <div id="reportsViewerModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white border border-zinc-200 rounded-2xl max-w-3xl w-full max-h-[92vh] flex flex-col shadow-2xl relative">
+      <div class="p-5 border-b border-zinc-200 bg-zinc-900 text-white rounded-t-2xl flex items-center justify-between">
+        <div><span class="text-[10px] font-black text-red-400 uppercase tracking-widest">SEGUIMIENTO</span><h3 id="reportsViewerTitle" class="text-xl font-black">Informes</h3></div>
+        <button onclick="closeModal('reportsViewerModal')" class="text-zinc-400 hover:text-white"><i class="fas fa-times"></i></button>
+      </div>
+      <div id="reportsViewerContent" class="p-5 overflow-y-auto space-y-3 flex-grow"></div>
+      <div class="p-4 border-t border-zinc-200 bg-zinc-50 flex justify-end"><button onclick="closeModal('reportsViewerModal')" class="py-2 px-5 bg-zinc-900 text-white text-xs font-bold rounded-xl">Cerrar</button></div>
+    </div>
+  </div>
+
+  <!-- MODAL 8: IMAGE PREVIEW MODAL -->
+  <div id="imagePreviewModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 hidden" onclick="closeModal('imagePreviewModal')">
+    <div class="max-w-xl w-full bg-white border border-zinc-200 rounded-2xl overflow-hidden shadow-2xl relative" onclick="event.stopPropagation()">
+      <button onclick="closeModal('imagePreviewModal')" class="absolute top-3 right-3 bg-black/70 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-black">
+        <i class="fas fa-times"></i>
+      </button>
+      <img id="previewModalImg" src="" alt="Demostración" class="w-full h-80 object-cover">
+      <div class="p-4 bg-white">
+        <h4 id="previewModalTitle" class="text-lg font-bold text-zinc-900">Ejercicio</h4>
+        <p id="previewModalCategory" class="text-xs text-red-600 font-bold"></p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="border-t border-zinc-200 bg-white py-6 px-4 mt-10">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+      <div class="flex items-center gap-2">
+        <span class="text-red-600 font-black">☘</span>
+        <span class="text-xs font-bold text-zinc-600 tracking-wider">SUPERA TUS LÍMITES AQUÍ Y AHORA  © 2026</span>
+      </div>
+
+      <div class="text-xs text-zinc-500 font-medium">
+        Created by <strong class="text-zinc-900">Dave</strong> | Instagram: 
+        <a href="https://instagram.com/dve_mx" target="_blank" class="text-red-600 hover:underline font-bold ml-0.5 inline-flex items-center gap-1">
+          <i class="fab fa-instagram"></i> @dve_mx
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <script>
+    /* =============================================================
+       SUPERA TUS LÍMITES AQUÍ Y AHORA
+       Núcleo de datos: sesiones independientes + planes de 30 días.
+       Base local + sincronización opcional en Firebase/Firestore para varios dispositivos.
+       ============================================================= */
+    const COACH_MASTER_PIN = "200303";
+    const APP_STORAGE_KEY = "surpass_your_limits_v6_db";
+    const APP_VERSION = 6;
+    const PLAN_DAYS = 30;
+    const WEEK_DAYS = ['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
+
+    // ===== ÚNICA CONFIGURACIÓN DEL LOGO =====
+    const LOGO_URL = "https://i.pinimg.com/736x/55/5f/4f/555f4f7005d0e67b46248c945fdf2304.jpg";
+
+    const EXERCISE_CATALOG = [
+      { name: 'Sentadilla Libre (Squat)', category: 'Cuádriceps', defaultImg: 'https://media.tenor.com/pdMmsiutWkcAAAAM/gym.gif' },
+      { name: 'Prensa de Piernas 45°', category: 'Cuádriceps', defaultImg: 'https://media.tenor.com/yBaS_oBgidsAAAAM/gym.gif' },
+      { name: 'Sentadilla Hack (Hack Squat)', category: 'Cuádriceps', defaultImg: 'https://media1.tenor.com/m/jiqHF0MkHeYAAAAC/gym.gif' },
+      { name: 'Extensión de Cuádriceps en Máquina', category: 'Cuádriceps', defaultImg: 'https://media1.tenor.com/m/L-taJvA94kQAAAAC/leg-extension.gif' },
+      { name: 'Peso Muerto Rumano con Barra', category: 'Femoral / Isquiotibiales', defaultImg: 'https://images.unsplash.com/photo-1534367507873-d2d7e24c797f?w=600&auto=format&fit=crop&q=80' },
+      { name: 'Curl Femoral Tumbado en Máquina', category: 'Femoral / Isquiotibiales', defaultImg: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=600&auto=format&fit=crop&q=80' },
+      { name: 'Hip Thrust con Barra / Máquina', category: 'Glúteos', defaultImg: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=600&auto=format&fit=crop&q=80' },
+      { name: 'Patada de Glúteo en Polea', category: 'Glúteos', defaultImg: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=600&auto=format&fit=crop&q=80' },
+      { name: 'Press de Banca Plano con Barra', category: 'Pecho', defaultImg: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=600&auto=format&fit=crop&q=80' },
+      { name: 'Press Inclinado con Mancuernas', category: 'Pecho', defaultImg: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=600&auto=format&fit=crop&q=80' },
+      { name: 'Jalón al Pecho en Polea Alta', category: 'Espalda', defaultImg: 'https://images.unsplash.com/photo-1598971639058-fab3c3109a00?w=600&auto=format&fit=crop&q=80' },
+      { name: 'Remo Gironde / Polea Baja Sentado', category: 'Espalda', defaultImg: 'https://images.unsplash.com/photo-1605296867304-46d5465a13f1?w=600&auto=format&fit=crop&q=80' },
+      { name: 'Press Militar en Máquina / Barra', category: 'Hombros', defaultImg: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=600&auto=format&fit=crop&q=80' },
+      { name: 'Curl de Bíceps Predicador', category: 'Bíceps', defaultImg: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=600&auto=format&fit=crop&q=80' },
+      { name: 'Extensión de Tríceps Polea Cuerda', category: 'Tríceps', defaultImg: 'https://images.unsplash.com/photo-1530822847156-5df684611749?w=600&auto=format&fit=crop&q=80' }
+    ];
+
+    const INITIAL_DATA = {
+      version: APP_VERSION,
+      clients: [
+        { id:'c1', name:'Alex Rivera', pin:'111111', startDate:new Date().toISOString(), enabled:true, notes:'Enfoque en la cadencia y tensión constante esta semana.' },
+        { id:'c2', name:'Sofía Gómez', pin:'222222', startDate:new Date(Date.now()-5*86400000).toISOString(), enabled:true, notes:'Priorizar máxima contracción en glúteos.' }
+      ],
+      routines: {
+        c1:{ Lunes:[
+          {id:'ex1',name:'Sentadilla Libre (Squat)',category:'Cuádriceps',sets:4,reps:'8-10',img:EXERCISE_CATALOG[0].defaultImg},
+          {id:'ex2',name:'Press Militar en Máquina / Barra',category:'Hombros',sets:3,reps:'10-12',img:EXERCISE_CATALOG[12].defaultImg}
+        ], Miércoles:[
+          {id:'ex3',name:'Press de Banca Plano con Barra',category:'Pecho',sets:4,reps:'8-10',img:EXERCISE_CATALOG[8].defaultImg},
+          {id:'ex4',name:'Jalón al Pecho en Polea Alta',category:'Espalda',sets:4,reps:'10-12',img:EXERCISE_CATALOG[10].defaultImg}
+        ]},
+        c2:{ }
+      },
+      plans:{},
+      logs:{},
+      trainingLogs:{},
+      cardioLogs:{},
+      reports:{},
+      notifications:[],
+      routineHistory:{},
+      settings:{theme:'light'}
+    };
+
+    let appData = structuredCloneSafe(INITIAL_DATA);
+    let currentRole = null;
+    let currentClientId = null;
+    let selectedDay = getTodayWeekday();
+    let isMakeupModeActive = false;
+    let makeupTargetDay = null;
+    let makeupPerformedDate = null;
+    let makeupPerformedDay = null;
+    let activeRoutineModalClientId = null;
+    let activeRoutineModalDay = 'Lunes';
+    let activeInspectorClientId = null;
+    let activeInspectorDay = 'Lunes';
+    let activeReportsClientId = null;
+    let revealedPins = {};
+    let isSaving = false;
+
+    // Puente explícito para el módulo Firebase (las const/let del script no son propiedades de window).
+    window.getAppData = () => appData;
+    window.setAppData = (value) => { appData = value; };
+    window.getAppVersion = () => APP_VERSION;
+    window.getAppStorageKey = () => APP_STORAGE_KEY;
+    window.getCurrentRole = () => currentRole;
+    window.getCurrentClientId = () => currentClientId;
+
+    function structuredCloneSafe(obj){ return JSON.parse(JSON.stringify(obj)); }
+    function uid(prefix='id'){ return `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2,8)}`; }
+    function nowISO(){ return new Date().toISOString(); }
+    function pad(n){ return String(n).padStart(2,'0'); }
+    function dateFromISO(iso){ const [y,m,d] = String(iso).split('-').map(Number); return new Date(y,(m||1)-1,d||1,12,0,0); }
+    function getLocalDateISO(date=new Date()){
+      return `${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`;
+    }
+    function addDaysISO(iso, days){ const d=dateFromISO(iso); d.setDate(d.getDate()+days); return getLocalDateISO(d); }
+    function formatDate(iso){ if(!iso) return 'Sin fecha'; return new Intl.DateTimeFormat('es-MX',{weekday:'long',year:'numeric',month:'long',day:'numeric'}).format(dateFromISO(iso)); }
+    function formatDateShort(iso){ if(!iso) return 'Sin fecha'; return new Intl.DateTimeFormat('es-MX',{day:'2-digit',month:'short',year:'numeric'}).format(dateFromISO(iso)); }
+    function getTodayWeekday(date=new Date()) { return new Intl.DateTimeFormat('es-MX',{weekday:'long'}).format(date).replace(/^./,c=>c.toUpperCase()); }
+    function getWeekStartISO(iso=getLocalDateISO()) { const d=dateFromISO(iso); const day=(d.getDay()+6)%7; d.setDate(d.getDate()-day); return getLocalDateISO(d); }
+    function getWeekEndISO(iso=getLocalDateISO()) { return addDaysISO(getWeekStartISO(iso),6); }
+    function inRange(iso,start,end){ return !!iso && (!start || iso>=start) && (!end || iso<=end); }
+    function esc(value){ return String(value??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
+
+    function getLogoHtml(sizeClass='w-7 h-7'){
+      if(!LOGO_URL.trim()) return '';
+      return `<img src="${esc(LOGO_URL)}" alt="Logo" class="${sizeClass} object-contain rounded-md" onerror="this.style.display='none'">`;
+    }
+
+    function defaultRoutines(){ return {}; }
+    function ensureDataShape(){
+      if(!appData || typeof appData!=='object') appData=structuredCloneSafe(INITIAL_DATA);
+      const defaults=['clients','routines','plans','logs','trainingLogs','cardioLogs','reports','notifications','routineHistory','settings'];
+      defaults.forEach(k=>{ if(!(k in appData)) appData[k]=k==='settings'?{theme:'light'}:{}; });
+      if(!Array.isArray(appData.clients)) appData.clients=[];
+      appData.clients.forEach(c=>{
+        c.enabled=c.enabled!==false;
+        if(!c.startDate) c.startDate=nowISO();
+        if(!appData.routines[c.id]) appData.routines[c.id]=defaultRoutines();
+        if(!appData.trainingLogs[c.id]) appData.trainingLogs[c.id]=[];
+        if(!appData.cardioLogs[c.id]) appData.cardioLogs[c.id]=[];
+        if(!appData.reports[c.id]) appData.reports[c.id]=[];
+      });
+    }
+
+    function getActivePlan(clientId){
+      const client=appData.clients.find(c=>c.id===clientId);
+      if(!client) return null;
+      if(!appData.plans[clientId]) appData.plans[clientId]=[];
+      let active=appData.plans[clientId].find(p=>p.active);
+      if(!active){
+        const start=getLocalDateISO(new Date(client.startDate));
+        const end=addDaysISO(start,PLAN_DAYS-1);
+        active={id:uid('plan'),number:appData.plans[clientId].length+1,startDate:start,endDate:end,createdAt:nowISO(),active:true,routines:structuredCloneSafe(appData.routines[clientId]||{})};
+        appData.plans[clientId].push(active);
+      }
+      appData.routines[clientId]=active.routines;
+      return active;
+    }
+
+    function migrateLegacyData(){
+      ensureDataShape();
+      appData.clients.forEach(client=>{
+        let plans=appData.plans[client.id]||[];
+
+        // Recuperar historial de planes de la versión anterior y convertirlo al mismo modelo.
+        if(!plans.length && Array.isArray(appData.routineHistory?.[client.id])){
+          plans=appData.routineHistory[client.id].map((old,index)=>({
+            id:old.id||uid('plan'), number:index+1,
+            startDate:old.startDate||getLocalDateISO(new Date(client.startDate||nowISO())),
+            endDate:old.endDate||addDaysISO(old.startDate||getLocalDateISO(new Date(client.startDate||nowISO())),PLAN_DAYS-1),
+            createdAt:old.createdAt||nowISO(), archivedAt:old.archivedAt||nowISO(), active:false,
+            routines:structuredCloneSafe(old.routines||{}),
+            legacyRecords:structuredCloneSafe(old.records||[])
+          }));
+        }
+        if(plans.length===0){
+          const start=getLocalDateISO(new Date(client.startDate||nowISO()));
+          const end=addDaysISO(start,PLAN_DAYS-1);
+          plans=[{id:uid('plan'),number:1,startDate:start,endDate:end,createdAt:nowISO(),active:true,routines:structuredCloneSafe(appData.routines[client.id]||{})}];
+        }
+        appData.plans[client.id]=plans;
+        if(!plans.some(p=>p.active)) plans.push({id:uid('plan'),number:plans.length+1,startDate:getLocalDateISO(new Date(client.startDate||nowISO())),endDate:addDaysISO(getLocalDateISO(new Date(client.startDate||nowISO())),PLAN_DAYS-1),createdAt:nowISO(),active:true,routines:structuredCloneSafe(appData.routines[client.id]||{})});
+        const actives=plans.filter(p=>p.active);
+        if(actives.length>1) actives.slice(0,-1).forEach(p=>p.active=false);
+        const active=getActivePlan(client.id);
+        client.activePlanId=active.id;
+
+        // Convert date-aware logs from older versions into independent sessions.
+        const oldLogs=appData.logs||{};
+        Object.entries(oldLogs).forEach(([key,log])=>{
+          if(!log || key.startsWith('__migrated__')) return;
+          const parts=key.split('_');
+          if(parts.length<6 || parts[0]!==client.id) return;
+          const date=parts[1];
+          if(!/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
+          const type=parts[2]==='makeup'?'makeup':'normal';
+          const day=parts[3]||log.scheduledDay||'Lunes';
+          const exId=parts[4]; const setIndex=Number(parts[5]);
+          let session=appData.trainingLogs[client.id].find(x=>x.planId===active.id && x.performedDate===date && x.isMakeup===(type==='makeup') && x.scheduledDay===day);
+          if(!session){
+            session={id:uid('session'),key:`${client.id}_${active.id}_${date}_${type}_${day}`,clientId:client.id,planId:active.id,scheduledDay:day,performedDay:log.performedDay||getTodayWeekday(dateFromISO(date)),scheduledDate:date,performedDate:date,isMakeup:type==='makeup',startedAt:log.startedAt||nowISO(),completedAt:log.completed?nowISO():null,completed:!!log.completed,setLogs:{},cardioIds:[]};
+            appData.trainingLogs[client.id].push(session);
+          }
+          session.setLogs[`${exId}__${setIndex}`]={weight:log.weight??'',reps:log.reps??'',completed:!!log.completed,updatedAt:log.updatedAt||nowISO()};
+          appData.logs[`__migrated__${key}`]={migratedAt:nowISO(),original:log};
+        });
+      });
+      appData.version=APP_VERSION;
+    }
+
+    function loadDataFromStorage(){
+      try{
+        // Migración explícita: conserva datos de versiones anteriores de esta misma app.
+        const candidateKeys=[APP_STORAGE_KEY,'surpass_your_limits_v5_db','surpass_your_limits_v4_db'];
+        let raw=null, sourceKey=APP_STORAGE_KEY;
+        for(const key of candidateKeys){
+          const value=localStorage.getItem(key);
+          if(value){ raw=value; sourceKey=key; break; }
+        }
+        if(raw) appData=JSON.parse(raw);
+        else appData=structuredCloneSafe(INITIAL_DATA);
+        migrateLegacyData();
+        saveDataToStorage();
+        if(sourceKey!==APP_STORAGE_KEY) localStorage.setItem(APP_STORAGE_KEY,JSON.stringify(appData));
+      }catch(err){
+        console.error('Error cargando datos:',err);
+        appData=structuredCloneSafe(INITIAL_DATA);
+        migrateLegacyData();
+        saveDataToStorage();
+      }
+    }
+
+    const LOCAL_META_KEY='supera_your_limits_local_meta_v1';
+    function saveDataToStorage(){
+      try{
+        if(isSaving) return;
+        isSaving=true;
+        localStorage.setItem(APP_STORAGE_KEY,JSON.stringify(appData));
+        localStorage.setItem(LOCAL_META_KEY,String(Date.now()));
+        if(!window.cloudApplying) window.cloudBridge?.queueSave?.(appData);
+      }catch(err){ console.error('No se pudo guardar:',err); showToast('No se pudo guardar la información en este dispositivo.','error'); }
+      finally{ isSaving=false; }
+    }
+
+    function bootstrap(){
+      loadDataFromStorage();
+      const headerLogo=document.getElementById('headerLogo'); if(headerLogo) headerLogo.innerHTML=getLogoHtml('w-7 h-7');
+      const loginLogo=document.getElementById('loginLogo'); if(loginLogo) loginLogo.innerHTML=getLogoHtml('w-10 h-10');
+      populateCatalogSelect();
+      applyTheme();
+      goHome();
+      window.cloudBridge?.start?.();
+      setInterval(()=>{
+        if(currentRole==='client' && currentClientId){ renderClientDashboard(); }
+        if(currentRole==='coach'){ renderCoachDashboard(); }
+      },60000);
+    }
+    window.addEventListener('DOMContentLoaded',bootstrap);
+    if('serviceWorker' in navigator){
+      window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(err=>console.warn('PWA:',err)));
+    }
+
+    function applyTheme(){
+      document.documentElement.classList.toggle('dark', appData.settings?.theme==='dark');
+    }
+    function toggleTheme(){
+      appData.settings.theme=appData.settings.theme==='dark'?'light':'dark';
+      saveDataToStorage(); applyTheme();
+    }
+
+    function populateCatalogSelect(filterCategory='ALL'){
+      const select=document.getElementById('modalCatalogSelect'); if(!select)return;
+      select.innerHTML='<option value="">-- Elige un Ejercicio --</option>';
+      EXERCISE_CATALOG.forEach((item,index)=>{
+        if(filterCategory==='ALL'||item.category===filterCategory){ const opt=document.createElement('option'); opt.value=index; opt.textContent=`${item.name} [${item.category}]`; select.appendChild(opt); }
+      });
+    }
+    function filterCatalogByMuscle(category){ populateCatalogSelect(category); }
+    function handleCatalogSelectChange(el){
+      const item=EXERCISE_CATALOG[Number(el.value)]; if(!item)return;
+      document.getElementById('modalExName').value=item.name;
+      document.getElementById('modalExCategory').value=item.category;
+      document.getElementById('modalExImg').value=item.defaultImg;
+    }
+
+    function showSection(id){ ['loginView','clientDashboardView','coachDashboardView'].forEach(x=>document.getElementById(x)?.classList.add('hidden')); document.getElementById(id)?.classList.remove('hidden'); }
+    function updateNavBadge(){
+      const c=document.getElementById('navRightSection'); if(!c)return;
+      if(currentRole==='coach') c.innerHTML=`<span class="text-xs font-bold px-3 py-1 bg-red-100 text-red-700 border border-red-300 rounded-xl">COACH DAVE</span><button onclick="logout()" class="px-3 py-1.5 text-xs font-bold bg-zinc-900 text-white rounded-xl">Salir</button>`;
+      else if(currentRole==='client'&&currentClientId){ const client=appData.clients.find(x=>x.id===currentClientId); c.innerHTML=`<span class="text-xs font-bold px-3 py-1 bg-zinc-100 border border-zinc-200 text-zinc-800 rounded-xl">${esc(client?.name||'Cliente')}</span><button onclick="logout()" class="px-3 py-1.5 text-xs font-bold bg-zinc-900 text-white rounded-xl">Salir</button>`; }
+      else c.innerHTML=`<button onclick="openCoachLoginModal()" class="px-3.5 py-1.5 text-xs font-bold bg-zinc-900 text-white rounded-xl flex items-center gap-2 shadow-sm"><i class="fas fa-user-shield text-red-500"></i><span>Modo Coach</span></button>`;
+    }
+    function goHome(){ currentRole=null; currentClientId=null; isMakeupModeActive=false; makeupTargetDay=null; updateNavBadge(); showSection('loginView'); }
+    function logout(){ goHome(); showToast('Sesión cerrada correctamente','info'); }
+
+    function clientPlanMeta(client){
+      const p=getActivePlan(client.id); if(!p)return null;
+      const today=getLocalDateISO();
+      const before=today<p.startDate, after=today>p.endDate;
+      const daysElapsed=before?0:Math.min(PLAN_DAYS-1,Math.max(0,Math.floor((dateFromISO(today)-dateFromISO(p.startDate))/86400000)));
+      const dayNumber=before?0:daysElapsed+1;
+      const remaining=after?0:Math.max(0,PLAN_DAYS-daysElapsed-1);
+      const status=after?'vencido':(remaining<=7?'próximo a vencer':'activo');
+      return {plan:p,today,dayNumber,remaining,status,before,after};
+    }
+
+    function handleClientLogin(e){
+      e.preventDefault();
+      const pin=document.getElementById('clientPinInput').value.trim();
+      const client=appData.clients.find(c=>c.pin===pin);
+      if(!client){showToast('Código PIN incorrecto.','error');return;}
+      if(!client.enabled){showToast('Tu plan está pausado. Contacta a @dve_mx.','error');return;}
+      const meta=clientPlanMeta(client);
+      if(meta?.after){showToast('Tu plan de 30 días ha vencido. Contacta a Dave para renovarlo.','error');return;}
+      currentRole='client'; currentClientId=client.id; selectedDay=getTodayWeekday();
+      document.getElementById('clientPinInput').value='';
+      updateNavBadge(); showSection('clientDashboardView'); renderClientDashboard(); showToast(`¡Bienvenido de nuevo, ${client.name}!`,'success');
+    }
+    function openCoachLoginModal(){ document.getElementById('coachPinInput').value=''; openModal('coachLoginModal'); }
+    function handleCoachLogin(e){ e.preventDefault(); if(document.getElementById('coachPinInput').value.trim()!==COACH_MASTER_PIN){showToast('Clave de Coach incorrecta.','error');return;} closeModal('coachLoginModal'); currentRole='coach'; currentClientId=null; updateNavBadge(); showSection('coachDashboardView'); renderCoachDashboard(); showToast('¡Acceso concedido, Coach Dave!','success'); }
+
+    function renderClientDashboard(){
+      const client=appData.clients.find(c=>c.id===currentClientId); if(!client)return;
+      const meta=clientPlanMeta(client); if(!meta)return;
+      document.getElementById('clientWelcomeName').textContent=`Hola, ${client.name}`;
+      document.getElementById('clientAvatarInitials').textContent=(client.name||'?').charAt(0).toUpperCase();
+      document.getElementById('daysRemainingCount').textContent=meta.remaining;
+      const badge=document.getElementById('clientStatusBadge'); badge.textContent=meta.after?'PLAN VENCIDO':`DÍA ${meta.dayNumber}/${PLAN_DAYS}`; badge.className=`text-[10px] font-extrabold px-2.5 py-0.5 rounded-full ${meta.after?'bg-red-100 text-red-800 border border-red-300':'bg-emerald-100 text-emerald-800 border border-emerald-300'}`;
+      const notesBox=document.getElementById('coachNotesBox'); const notes=document.getElementById('coachNotesContent');
+      if(client.notes?.trim()){notes.textContent=client.notes;notesBox.classList.remove('hidden');}else notesBox.classList.add('hidden');
+      updateDayButtonsUI(); renderClientExercises(); renderCardioLogs(); renderTrainingCompletionStatus(); renderLeaderboard();
+      document.getElementById('clientAdherenceScore').textContent=`${calculateClientAdherence(client.id)}%`;
+    }
+
+    function selectDay(dayName){ selectedDay=dayName; if(isMakeupModeActive)exitMakeupMode(); updateDayButtonsUI(); renderClientExercises(); renderCardioLogs(); renderTrainingCompletionStatus(); }
+    function updateDayButtonsUI(){
+      document.querySelectorAll('.day-btn').forEach(btn=>{const active=btn.dataset.day===selectedDay;btn.className=`day-btn flex-1 min-w-[90px] py-3 px-3 ${active?'bg-red-600 text-white shadow-md':'bg-white hover:bg-zinc-50 border border-zinc-200 text-zinc-600 shadow-sm'} rounded-xl text-xs font-bold transition text-center`;});
+      document.getElementById('currentDayTitle').textContent=isMakeupModeActive?`REPONIENDO ${makeupTargetDay} • REALIZADO ${makeupPerformedDay}`:selectedDay;
+    }
+
+    function openMakeupModal(){
+      const select=document.getElementById('makeupDaySelect');
+      const options=WEEK_DAYS.filter(d=>(appData.routines[currentClientId]?.[d]||[]).length>0);
+      select.innerHTML=(options.length?options:WEEK_DAYS).map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join('');
+      openModal('makeupModal');
+    }
+    function confirmMakeupDay(){
+      const target=document.getElementById('makeupDaySelect').value;
+      if(!target){showToast('Selecciona el día que vas a reponer.','error');return;}
+      makeupTargetDay=target; makeupPerformedDate=getLocalDateISO(); makeupPerformedDay=getTodayWeekday(); selectedDay=target; isMakeupModeActive=true;
+      closeModal('makeupModal'); document.getElementById('makeupBanner').classList.remove('hidden');
+      document.getElementById('makeupBannerText').innerHTML=`Modo <strong>Reponiendo Día Perdido</strong>: recuperas <strong>${esc(target)}</strong> y se registra con fecha real <strong>${esc(makeupPerformedDate)}</strong>.`;
+      updateDayButtonsUI(); renderClientExercises(); renderCardioLogs(); renderTrainingCompletionStatus();
+    }
+    function exitMakeupMode(){ isMakeupModeActive=false; makeupTargetDay=null; makeupPerformedDate=null; makeupPerformedDay=null; document.getElementById('makeupBanner')?.classList.add('hidden'); updateDayButtonsUI(); renderClientExercises(); renderCardioLogs(); renderTrainingCompletionStatus(); }
+
+    function getCurrentScheduledDay(){ return isMakeupModeActive?makeupTargetDay:selectedDay; }
+    function getCurrentPerformedDate(){ return isMakeupModeActive?(makeupPerformedDate||getLocalDateISO()):getLocalDateISO(); }
+    function getCurrentPerformedDay(){ return isMakeupModeActive?(makeupPerformedDay||getTodayWeekday()):getTodayWeekday(); }
+    function getSessionKey(){ return `${currentClientId}__${getActivePlan(currentClientId).id}__${getCurrentPerformedDate()}__${isMakeupModeActive?'makeup':'normal'}__${getCurrentScheduledDay()}`; }
+    function getSessionList(clientId=currentClientId){ if(!appData.trainingLogs[clientId])appData.trainingLogs[clientId]=[]; return appData.trainingLogs[clientId]; }
+    function getCurrentTrainingSession(){ return getSessionList().find(s=>s.key===getSessionKey())||null; }
+    function ensureCurrentSession(){
+      let s=getCurrentTrainingSession(); if(s)return s;
+      const p=getActivePlan(currentClientId);
+      s={id:uid('session'),key:getSessionKey(),clientId:currentClientId,planId:p.id,scheduledDay:getCurrentScheduledDay(),scheduledDate:isMakeupModeActive?'':getCurrentPerformedDate(),performedDay:getCurrentPerformedDay(),performedDate:getCurrentPerformedDate(),isMakeup:isMakeupModeActive,startedAt:nowISO(),completedAt:null,completed:false,setLogs:{},cardioIds:[]};
+      getSessionList().push(s); saveDataToStorage(); return s;
+    }
+    function getSessionById(id,clientId=currentClientId){ return getSessionList(clientId).find(s=>s.id===id)||null; }
+
+    function getExerciseForDay(clientId,day,planId){
+      const p=(appData.plans[clientId]||[]).find(x=>x.id===planId)||getActivePlan(clientId);
+      return (p?.routines?.[day]||[]);
+    }
+    function getExistingSetLog(exId,setIndex){
+      const session=getCurrentTrainingSession();
+      if(!session)return null;
+      return session.setLogs?.[`${exId}__${setIndex}`]||null;
+    }
+    function renderClientExercises(){
+      const container=document.getElementById('exerciseCardsContainer'); if(!container)return;
+      container.innerHTML='';
+      const p=getActivePlan(currentClientId); const activeDay=getCurrentScheduledDay(); const exercises=getExerciseForDay(currentClientId,activeDay,p.id);
+      document.getElementById('exerciseCountBadge').textContent=`${exercises.length} Ejercicios`;
+      if(!exercises.length){container.innerHTML=`<div class="col-span-full bg-white border border-zinc-200 rounded-2xl p-8 text-center shadow-sm"><i class="fas fa-mug-hot text-3xl text-zinc-400 mb-2"></i><h4 class="text-sm font-bold text-zinc-800">Día sin ejercicios asignados</h4><p class="text-xs text-zinc-500 mt-1">Dave no asignó ejercicios para ${esc(activeDay)}.</p></div>`;return;}
+      exercises.forEach(ex=>{
+        const card=document.createElement('div'); card.className='bg-white border border-zinc-200 rounded-2xl p-4 shadow-sm flex flex-col justify-between space-y-4';
+        const imgUrl=ex.img||EXERCISE_CATALOG[0].defaultImg;
+        let rows='';
+        for(let i=0;i<(Number(ex.sets)||0);i++){
+          const log=getExistingSetLog(ex.id,i)||{weight:'',reps:'',completed:false};
+          rows+=`<div class="flex items-center gap-2 text-xs"><span class="w-12 text-zinc-500 font-bold">Serie ${i+1}</span><input type="number" min="0" step="0.1" placeholder="kg" value="${esc(log.weight)}" onchange="saveSetLog('${esc(ex.id)}',${i},'weight',this.value)" class="w-full bg-zinc-50 border border-zinc-300 rounded-lg py-1.5 px-2 text-zinc-900 text-center font-mono focus:border-red-600 focus:outline-none"><input type="number" min="0" step="1" placeholder="Reps" value="${esc(log.reps)}" onchange="saveSetLog('${esc(ex.id)}',${i},'reps',this.value)" class="w-full bg-zinc-50 border border-zinc-300 rounded-lg py-1.5 px-2 text-zinc-900 text-center font-mono focus:border-red-600 focus:outline-none"><button onclick="toggleSetComplete('${esc(ex.id)}',${i})" class="p-2 rounded-lg transition ${log.completed?'bg-emerald-600 text-white':'bg-zinc-100 text-zinc-400 hover:text-zinc-700'}"><i class="fas fa-check"></i></button></div>`;
+        }
+        card.innerHTML=`<div class="flex items-start gap-3"><div class="relative group cursor-pointer" onclick="openImagePreview(${JSON.stringify(ex.name)},${JSON.stringify(ex.category||'General')},${JSON.stringify(imgUrl)})"><img src="${esc(imgUrl)}" alt="${esc(ex.name)}" class="w-20 h-20 object-cover rounded-xl border border-zinc-200 shadow-sm"><div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition"><i class="fas fa-search-plus text-white text-xs bg-black/60 p-1.5 rounded-full"></i></div></div><div class="flex-grow"><div class="flex items-center justify-between"><span class="text-[10px] font-bold text-red-600 uppercase tracking-widest">${esc(ex.category||'General')}</span>${isMakeupModeActive?'<span class="text-[9px] bg-amber-100 text-amber-800 border border-amber-300 px-1.5 py-0.5 rounded font-bold">Reponiendo</span>':''}</div><h4 class="text-sm font-extrabold text-zinc-900 leading-tight mt-0.5">${esc(ex.name)}</h4><p class="text-xs text-zinc-500 font-medium mt-1"><i class="fas fa-redo-alt text-red-600 text-[10px] mr-1"></i>${Number(ex.sets)||0} Series × ${esc(ex.reps||'-')} reps</p></div></div><div class="bg-zinc-50 border border-zinc-200 rounded-xl p-3 space-y-2"><div class="flex justify-between text-[10px] font-bold text-zinc-500 uppercase px-1"><span>Serie</span><span>Peso</span><span>Reps</span><span>Estado</span></div>${rows}</div>`;
+        container.appendChild(card);
+      });
+    }
+
+    function getOrCreateSet(exId,setIndex){ const s=ensureCurrentSession(); const k=`${exId}__${setIndex}`; if(!s.setLogs[k])s.setLogs[k]={weight:'',reps:'',completed:false,updatedAt:nowISO()}; return s.setLogs[k]; }
+    function saveSetLog(exId,setIndex,field,value){
+      const v=String(value??'').trim(); if(v!=='' && Number(v)<0){showToast('No se permiten valores negativos.','error');renderClientExercises();return;}
+      const log=getOrCreateSet(exId,setIndex); log[field]=v; log.updatedAt=nowISO(); saveDataToStorage();
+    }
+    function toggleSetComplete(exId,setIndex){ const log=getOrCreateSet(exId,setIndex); log.completed=!log.completed; log.updatedAt=nowISO(); saveDataToStorage(); renderClientExercises(); renderTrainingCompletionStatus(); }
+
+    function renderTrainingCompletionStatus(){
+      const btn=document.getElementById('finishTrainingBtn'), status=document.getElementById('trainingCompletionStatus'); if(!btn||!status||!currentClientId)return;
+      const s=getCurrentTrainingSession();
+      if(s?.completed){ btn.disabled=true;btn.className='w-full sm:w-auto py-2.5 px-5 bg-zinc-200 text-zinc-500 text-xs font-black rounded-xl shadow-sm cursor-not-allowed flex items-center justify-center gap-2';btn.innerHTML='<i class="fas fa-check-double"></i><span>ENTRENAMIENTO REGISTRADO</span>';status.innerHTML=s.isMakeup?`✓ Reposición de <strong>${esc(s.scheduledDay)}</strong> realizada el <strong>${esc(s.performedDay)}</strong> (${esc(s.performedDate)}).`:`✓ Entrenamiento registrado el <strong>${esc(s.performedDay)}</strong> (${esc(s.performedDate)}).`; }
+      else { btn.disabled=false;btn.className='w-full sm:w-auto py-2.5 px-5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black rounded-xl shadow-md transition flex items-center justify-center gap-2';btn.innerHTML='<i class="fas fa-check-circle"></i><span>FINALIZAR ENTRENAMIENTO</span>';status.textContent=isMakeup?`Al finalizar se guardará como reposición de ${makeupTargetDay}, realizada hoy ${makeupPerformedDay}.`:'Cuando termines, pulsa el botón para registrar oficialmente el día y la fecha real.'; }
+    }
+    function finishTrainingSession(){
+      if(!currentClientId||isSaving)return;
+      const existing=getCurrentTrainingSession(); if(existing?.completed){showToast('Este entrenamiento ya está registrado.','info');return;}
+      const s=ensureCurrentSession(); const p=getActivePlan(currentClientId);
+      const exercises=getExerciseForDay(currentClientId,s.scheduledDay,p.id);
+      const incomplete=[];
+      exercises.forEach(ex=>{for(let i=0;i<(Number(ex.sets)||0);i++){const l=s.setLogs?.[`${ex.id}__${i}`];if(l?.completed===false && !incomplete.includes(ex.name)) incomplete.push(ex.name);}});
+      if(exercises.length && !Object.values(s.setLogs||{}).some(x=>x.completed)){ showToast('Marca al menos una serie como realizada antes de finalizar.','error');return; }
+      s.completed=true; s.completedAt=nowISO(); s.exerciseSnapshot=structuredCloneSafe(exercises); s.incompleteExercises=incomplete; s.performedDate=getCurrentPerformedDate(); s.performedDay=getCurrentPerformedDay();
+      saveDataToStorage(); renderTrainingCompletionStatus(); renderClientDashboard();
+      showToast(s.isMakeup?`Reposición de ${s.scheduledDay} registrada el ${s.performedDay}.`:`Entrenamiento de ${s.performedDay} registrado correctamente.`,'success');
+    }
+
+    function openAddCardioModal(){
+      const day=getCurrentScheduledDay(), performed=getCurrentPerformedDay(), date=getCurrentPerformedDate();
+      document.getElementById('cardioLinkedTraining').textContent=isMakeupModeActive?`Reposición de ${day} — realizada ${performed}`:`Entrenamiento de ${performed}`;
+      document.getElementById('cardioLinkedDate').textContent=formatDate(date);
+      ['cardioMinutesInput','cardioDistanceInput','cardioCaloriesInput','cardioNotesInput'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+      document.getElementById('cardioMinutesInput').value='30'; document.getElementById('cardioIntensityInput').value='Moderada';
+      openModal('addCardioModal');
+    }
+    function handleCardioSubmit(e){
+      e.preventDefault();
+      const minutes=Number(document.getElementById('cardioMinutesInput').value); const distanceRaw=document.getElementById('cardioDistanceInput').value; const caloriesRaw=document.getElementById('cardioCaloriesInput').value;
+      if(!Number.isFinite(minutes)||minutes<=0){showToast('Ingresa una duración válida.','error');return;}
+      const s=ensureCurrentSession(); const entry={id:uid('cardio'),sessionId:s.id,clientId:currentClientId,planId:s.planId,type:document.getElementById('cardioTypeSelect').value,machine:document.getElementById('cardioTypeSelect').value,minutes,distance:distanceRaw===''?null:Number(distanceRaw),calories:caloriesRaw===''?null:Number(caloriesRaw),intensity:document.getElementById('cardioIntensityInput').value,notes:document.getElementById('cardioNotesInput').value.trim(),performedDate:s.performedDate,performedDay:s.performedDay,scheduledDay:s.scheduledDay,isMakeup:s.isMakeup,createdAt:nowISO()};
+      if(!appData.cardioLogs[currentClientId])appData.cardioLogs[currentClientId]=[]; appData.cardioLogs[currentClientId].push(entry); if(!Array.isArray(s.cardioIds))s.cardioIds=[];s.cardioIds.push(entry.id);
+      saveDataToStorage(); closeModal('addCardioModal'); renderCardioLogs(); renderTrainingCompletionStatus(); showToast('Cardio registrado en la sesión real.','success');
+    }
+    function renderCardioLogs(){
+      const container=document.getElementById('cardioLogList'); if(!container)return;container.innerHTML=''; const s=getCurrentTrainingSession();
+      const logs=s?(appData.cardioLogs[currentClientId]||[]).filter(x=>x.sessionId===s.id):[];
+      if(!logs.length){container.innerHTML='<div class="col-span-full border border-dashed border-zinc-300 rounded-xl p-4 text-center"><i class="fas fa-running text-zinc-300 text-xl mb-2"></i><p class="text-xs font-bold text-zinc-500">No hay cardio registrado para esta sesión.</p><p class="text-[10px] text-zinc-400 mt-1">Agrega únicamente el cardio que realmente realizaste.</p></div>';return;}
+      logs.forEach(item=>{const div=document.createElement('div');div.className='bg-emerald-50 border border-emerald-200 rounded-xl p-3 flex items-center justify-between shadow-sm';div.innerHTML=`<div><span class="text-[10px] font-bold text-emerald-700 uppercase">${esc(item.performedDay)} • REGISTRADO</span><span class="block text-[9px] text-zinc-500">${item.isMakeup?`Reposición de ${esc(item.scheduledDay)}`:'Sesión normal'}</span><h5 class="text-xs font-bold text-zinc-900">${esc(item.type)}</h5><span class="text-[10px] text-zinc-500 font-mono">${item.minutes} min${item.distance!=null?' • '+item.distance+' km':''}${item.calories!=null?' • '+item.calories+' kcal':''}</span></div><button onclick="deleteCardioLog('${esc(item.id)}')" class="text-zinc-400 hover:text-red-600 text-xs"><i class="fas fa-trash"></i></button>`;container.appendChild(div);});
+    }
+    function deleteCardioLog(id){ if(!confirm('¿Eliminar este registro de cardio?'))return; appData.cardioLogs[currentClientId]=(appData.cardioLogs[currentClientId]||[]).filter(x=>x.id!==id); appData.trainingLogs[currentClientId].forEach(s=>s.cardioIds=(s.cardioIds||[]).filter(x=>x!==id)); saveDataToStorage(); renderCardioLogs(); showToast('Registro eliminado.','info'); }
+
+    function getPlanSessions(clientId,planId,onlyCompleted=false){ return (appData.trainingLogs[clientId]||[]).filter(s=>s.planId===planId && (!onlyCompleted||s.completed)); }
+    function calculateClientAdherence(clientId){
+      const p=getActivePlan(clientId); if(!p)return 0; const today=getLocalDateISO(); const end=today<p.startDate?p.startDate:(today>p.endDate?p.endDate:today);
+      const plannedDays=Object.entries(p.routines||{}).filter(([d,e])=>(e||[]).length).map(([d])=>d); if(!plannedDays.length)return 0;
+      let due=0; for(let iso=p.startDate;iso<=end;iso=addDaysISO(iso,1)){const day=getTodayWeekday(dateFromISO(iso));if(plannedDays.includes(day))due++;}
+      const done=new Set(getPlanSessions(clientId,p.id,true).filter(s=>s.performedDate<=end).map(s=>s.scheduledDate||s.scheduledDay));
+      // Count unique performed sessions against due scheduled occurrences when no duplicate makeup is involved.
+      const completedNormal=getPlanSessions(clientId,p.id,true).filter(s=>!s.isMakeup&&s.performedDate<=end).length;
+      const pct=due?Math.min(100,Math.round((completedNormal/due)*100)):0;
+      return pct;
+    }
+
+    function renderLeaderboard(){
+      const tbody=document.getElementById('leaderboardTbody');if(!tbody)return;tbody.innerHTML='';
+      appData.clients.map(c=>({c,adherence:calculateClientAdherence(c.id),meta:clientPlanMeta(c)})).sort((a,b)=>b.adherence-a.adherence).forEach((item,i)=>{const tr=document.createElement('tr');tr.className=`hover:bg-zinc-50 transition ${item.c.id===currentClientId?'bg-red-50':''}`;tr.innerHTML=`<td class="py-3 px-3">${i<3?['🥇','🥈','🥉'][i]:i+1}</td><td class="py-3 px-3 font-bold">${esc(item.c.name)} ${item.c.id===currentClientId?'<span class="text-[9px] bg-red-600 text-white px-1.5 py-0.5 rounded">TÚ</span>':''}</td><td class="py-3 px-3 text-center"><span class="px-2.5 py-1 rounded-full text-xs font-black bg-red-100 text-red-800">${item.adherence}%</span></td><td class="py-3 px-3 text-right font-mono font-bold">${item.meta?.remaining??0}d</td>`;tbody.appendChild(tr);});
+    }
+
+    function renderCoachDashboard(){
+      appData.clients.forEach(c=>getActivePlan(c.id));
+      const total=appData.clients.length, active=appData.clients.filter(c=>c.enabled&&!clientPlanMeta(c)?.after).length;
+      const avg=total?Math.round(appData.clients.reduce((a,c)=>a+calculateClientAdherence(c.id),0)/total):0;
+      document.getElementById('statTotalClients').textContent=total;document.getElementById('statActiveClients').textContent=active;document.getElementById('statAvgAdherence').textContent=`${avg}%`;
+      const container=document.getElementById('coachClientsGrid');container.innerHTML='';
+      if(!total){container.innerHTML='<p class="text-xs text-zinc-500 col-span-full">No tienes ningún alumno registrado.</p>';return;}
+      appData.clients.forEach(client=>{
+        const meta=clientPlanMeta(client), adherence=calculateClientAdherence(client.id), unread=(appData.reports[client.id]||[]).filter(r=>r.status==='new').length; const revealed=!!revealedPins[client.id];
+        const card=document.createElement('div');card.className='bg-white border border-zinc-200 rounded-2xl p-5 shadow-sm flex flex-col justify-between space-y-4';
+        card.innerHTML=`<div><div class="flex items-start justify-between"><div><h4 class="text-base font-extrabold text-zinc-900">${esc(client.name)}</h4><div class="flex items-center gap-2 mt-1"><span class="text-xs text-zinc-600 font-mono">PIN: <strong>${revealed?esc(client.pin):'••••••'}</strong></span><button onclick="toggleCoachPinVisibility('${esc(client.id)}')" class="text-zinc-400 text-xs"><i class="fas ${revealed?'fa-eye-slash':'fa-eye'}"></i></button><button onclick="openEditPinModal('${esc(client.id)}')" class="text-red-600 text-xs font-bold">Editar PIN</button></div></div><span class="text-[10px] font-black px-2.5 py-0.5 rounded-full ${!client.enabled?'bg-zinc-100 text-zinc-500':meta.after?'bg-red-100 text-red-700 border border-red-300':'bg-emerald-100 text-emerald-800 border border-emerald-300'}">${!client.enabled?'PAUSADO':meta.after?'VENCIDO':'ACTIVO'}</span></div><div class="grid grid-cols-3 gap-2 my-3 pt-3 border-t border-zinc-100"><div class="bg-zinc-50 p-2 rounded-xl text-center border border-zinc-200"><span class="text-[9px] text-zinc-500 uppercase block font-bold">Plan</span><span class="text-sm font-extrabold">Día ${meta?.dayNumber||0}/${PLAN_DAYS}</span></div><div class="bg-zinc-50 p-2 rounded-xl text-center border border-zinc-200"><span class="text-[9px] text-zinc-500 uppercase block font-bold">Restantes</span><span class="text-sm font-extrabold ${meta?.remaining<=7?'text-amber-600':'text-zinc-900'}">${meta?.remaining??0}d</span></div><div class="bg-zinc-50 p-2 rounded-xl text-center border border-zinc-200"><span class="text-[9px] text-zinc-500 uppercase block font-bold">Cumplimiento</span><span class="text-sm font-extrabold text-red-600">${adherence}%</span></div></div><label class="block text-[10px] font-bold text-zinc-500 uppercase mb-1">Nota de Dave</label><textarea onchange="updateClientNotes('${esc(client.id)}',this.value)" rows="2" class="w-full bg-zinc-50 border border-zinc-200 rounded-xl p-2 text-xs">${esc(client.notes||'')}</textarea></div><div class="space-y-2 pt-2 border-t border-zinc-100"><button onclick="openClientProgressInspector('${esc(client.id)}')" class="w-full py-2 px-3 bg-zinc-900 text-white text-xs font-extrabold rounded-xl flex items-center justify-center gap-2"><i class="fas fa-chart-line text-red-500"></i>VER AVANCES & CARDIO</button><button onclick="openClientReports('${esc(client.id)}')" class="w-full py-2 px-3 bg-red-50 text-red-700 text-xs font-extrabold rounded-xl flex items-center justify-center gap-2 border border-red-200"><i class="fas fa-file-medical"></i>VER INFORMES ${unread?`<span class="bg-red-600 text-white px-1.5 py-0.5 rounded-full">${unread}</span>`:''}</button><button onclick="openRoutineHistoryModal('${esc(client.id)}')" class="w-full py-2 px-3 bg-zinc-100 text-zinc-800 text-xs font-extrabold rounded-xl flex items-center justify-center gap-2 border border-zinc-200"><i class="fas fa-folder-open text-amber-600"></i>HISTORIAL DE PLANES</button><button onclick="openEditRoutineModal('${esc(client.id)}')" class="w-full py-2 bg-red-600 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1.5"><i class="fas fa-dumbbell"></i>EDITAR RUTINA MENSUAL</button><button onclick="openAdjustDaysModal('${esc(client.id)}')" class="w-full py-2 bg-amber-50 text-amber-800 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 border border-amber-200"><i class="fas fa-calendar-day"></i>AJUSTAR DÍAS RESTANTES</button><div class="flex items-center gap-2"><button onclick="toggleClientStatus('${esc(client.id)}')" class="flex-1 py-1.5 px-2 bg-zinc-100 text-zinc-700 text-xs font-bold rounded-lg border border-zinc-200">${client.enabled?'Pausar':'Habilitar'}</button><button onclick="renewClientPlan('${esc(client.id)}')" class="flex-1 py-1.5 px-2 bg-zinc-100 text-emerald-700 text-xs font-bold rounded-lg border border-zinc-200"><i class="fas fa-sync-alt mr-1"></i>${meta.after?'RENOVAR 30d':'NUEVO PLAN'}</button><button onclick="deleteClient('${esc(client.id)}')" class="p-1.5 bg-zinc-100 text-zinc-500 hover:text-red-600 rounded-lg border border-zinc-200"><i class="fas fa-trash"></i></button></div></div>`;
+        container.appendChild(card);
+      });
+    }
+
+    function toggleCoachPinVisibility(id){revealedPins[id]=!revealedPins[id];renderCoachDashboard();}
+    function openEditPinModal(id){const c=appData.clients.find(x=>x.id===id);if(!c)return;document.getElementById('editPinClientId').value=id;document.getElementById('editPinInput').value=c.pin;document.getElementById('editPinModalSubtitle').textContent=`Modificar código de acceso de ${c.name}`;openModal('editPinModal');}
+    function handleSaveClientPin(e){e.preventDefault();const id=document.getElementById('editPinClientId').value,pin=document.getElementById('editPinInput').value.trim();if(!/^\d{6}$/.test(pin)){showToast('El PIN debe tener 6 dígitos numéricos.','error');return;}if(appData.clients.some(c=>c.id!==id&&c.pin===pin)){showToast('Ese PIN ya está en uso.','error');return;}const c=appData.clients.find(x=>x.id===id);if(c){c.pin=pin;saveDataToStorage();closeModal('editPinModal');renderCoachDashboard();showToast('PIN actualizado.','success');}}
+
+    function openClientProgressInspector(clientId){activeInspectorClientId=clientId;activeInspectorDay='Lunes';const c=appData.clients.find(x=>x.id===clientId);document.getElementById('inspectorClientTitle').textContent=`Avances de: ${c?.name||'Alumno'}`;selectInspectorDay('Lunes');openModal('viewProgressModal');}
+    function selectInspectorDay(day){activeInspectorDay=day;document.querySelectorAll('.inspector-day-tab').forEach(t=>{t.className=`inspector-day-tab px-3 py-2 text-xs font-bold ${t.dataset.iday===day?'text-red-600 border-b-2 border-red-600':'text-zinc-500 border-b-2 border-transparent'}`;});renderInspectorContent();}
+    function renderInspectorContent(){
+      const area=document.getElementById('inspectorContentArea');const cid=activeInspectorClientId;if(!area||!cid)return; area.innerHTML=''; const c=appData.clients.find(x=>x.id===cid);
+      if(activeInspectorDay==='Cardio'){
+        const items=(appData.cardioLogs[cid]||[]).slice().sort((a,b)=>b.performedDate.localeCompare(a.performedDate)); const total=items.reduce((n,x)=>n+Number(x.minutes||0),0);
+        area.innerHTML=`<div class="bg-red-50 border border-red-200 rounded-xl p-4 mb-4"><span class="text-[10px] font-bold uppercase text-red-600">Cardio acumulado</span><h4 class="text-xl font-black text-zinc-900">${total} minutos</h4></div>${items.length?items.map(x=>`<div class="border border-zinc-200 rounded-xl p-3 mb-2"><div class="flex justify-between"><strong class="text-xs">${esc(x.type)}</strong><span class="text-[10px] text-zinc-500">${esc(x.performedDate)}</span></div><p class="text-[10px] text-zinc-500 mt-1">${x.minutes} min${x.distance!=null?' • '+x.distance+' km':''}${x.calories!=null?' • '+x.calories+' kcal':''} • ${esc(x.intensity)}</p><p class="text-xs mt-1">${esc(x.notes||'Sin notas')}</p></div>`).join(''):'<p class="text-xs text-zinc-500">Aún no hay cardio registrado.</p>'}`;return;
+      }
+      const p=getActivePlan(cid);const exs=getExerciseForDay(cid,activeInspectorDay,p.id);if(!exs.length){area.innerHTML=`<div class="bg-zinc-50 border border-zinc-200 rounded-xl p-6 text-center text-zinc-500"><i class="fas fa-calendar-times text-3xl mb-2"></i><p class="text-xs font-bold">No hay ejercicios asignados para ${esc(activeInspectorDay)}.</p></div>`;return;}
+      const sessions=getPlanSessions(cid,p.id,true).filter(s=>s.scheduledDay===activeInspectorDay).sort((a,b)=>b.performedDate.localeCompare(a.performedDate));
+      area.innerHTML=`<div class="mb-4 p-3 bg-zinc-50 rounded-xl border border-zinc-200 text-xs"><strong>${esc(c?.name||'Alumno')}</strong> • ${sessions.length} sesiones completadas para ${esc(activeInspectorDay)}.</div>`;
+      exs.forEach(ex=>{const rows=sessions.slice(0,7).map(s=>{let done=0,last=[];for(let i=0;i<Number(ex.sets||0);i++){const l=s.setLogs?.[`${ex.id}__${i}`];if(l?.completed)done++;last.push(l?`${l.weight||'-'} kg × ${l.reps||'-'}`:'Sin registro');}return `<div class="bg-zinc-50 rounded-lg p-2 mb-1 text-[10px]"><div class="font-bold">${formatDateShort(s.performedDate)} ${s.isMakeup?'• REPOSICIÓN':''} — ${done}/${ex.sets} series</div><div class="text-zinc-500 mt-1">${last.join(' | ')}</div></div>`;}).join('');area.insertAdjacentHTML('beforeend',`<div class="border border-zinc-200 rounded-xl p-4 shadow-sm mb-3"><span class="text-[10px] text-red-600 font-bold uppercase">${esc(ex.category)}</span><h4 class="text-sm font-extrabold">${esc(ex.name)}</h4><p class="text-xs text-zinc-500 mb-2">Meta: ${ex.sets} × ${esc(ex.reps)}</p>${rows||'<p class="text-[10px] text-zinc-400">Sin sesiones registradas.</p>'}</div>`);});
+    }
+
+    function toggleClientStatus(id){const c=appData.clients.find(x=>x.id===id);if(!c)return;c.enabled=!c.enabled;saveDataToStorage();renderCoachDashboard();showToast(`Alumno ${c.enabled?'habilitado':'pausado'}.`,'info');}
+
+    let pendingRenewClientId = null;
+
+    function renewClientPlan(id){
+      const c=appData.clients.find(x=>x.id===id);
+      if(!c)return;
+      const current=getActivePlan(id);
+      const currentRoutine=current?structuredCloneSafe(current.routines||{}):{};
+      const hasExercises=Object.values(currentRoutine).some(day=>Array.isArray(day)&&day.length);
+      pendingRenewClientId=id;
+      document.getElementById('renewPlanSubtitle').textContent = hasExercises
+        ? `Plan actual de ${c.name}. Al continuar, el plan anterior se archivará como histórico y no podrá modificarse.`
+        : `Plan actual de ${c.name}. No hay ejercicios asignados; puedes crear una rutina nueva desde cero.`;
+      openModal('renewPlanModal');
+    }
+
+    function confirmRenewPlan(mode){
+      const id=pendingRenewClientId;
+      if(!id)return;
+      const c=appData.clients.find(x=>x.id===id);
+      if(!c)return;
+      const current=getActivePlan(id);
+      const list=appData.plans[id]||[];
+      const sourceRoutine=current?structuredCloneSafe(current.routines||{}):{};
+
+      if(!current && mode!=='new'){
+        showToast('No existe una rutina anterior que copiar. Se creará el nuevo plan sin ejercicios.','info');
+      }
+
+      // 1. Archivar el plan anterior de forma inmutable.
+      if(current){
+        current.active=false;
+        current.archivedAt=nowISO();
+        current.archivedRoutines=structuredCloneSafe(current.routines||{});
+        const records=getPlanSessions(id,current.id);
+        current.sessionIds=records.map(s=>s.id);
+        current.cardioIds=(appData.cardioLogs[id]||[]).filter(x=>x.planId===current.id).map(x=>x.id);
+        current.reportIds=(appData.reports[id]||[]).filter(r=>r.planId===current.id).map(r=>r.id);
+      }
+
+      // 2. Crear el nuevo plan según la decisión elegida.
+      const start=getLocalDateISO(),end=addDaysISO(start,PLAN_DAYS-1);
+      let nextRoutine={};
+      if(mode==='keep' || mode==='update'){
+        nextRoutine=structuredCloneSafe(sourceRoutine);
+      }
+
+      const next={
+        id:uid('plan'),
+        number:list.length+1,
+        startDate:start,
+        endDate:end,
+        createdAt:nowISO(),
+        active:true,
+        routines:nextRoutine,
+        renewalMode:mode,
+        copiedFromPlanId:current?.id||null,
+        sessionIds:[],
+        cardioIds:[],
+        reportIds:[]
+      };
+
+      list.push(next);
+      appData.plans[id]=list;
+      appData.routines[id]=next.routines;
+      c.startDate=new Date(`${start}T12:00:00`).toISOString();
+      c.activePlanId=next.id;
+      c.enabled=true;
+      pendingRenewClientId=null;
+      closeModal('renewPlanModal');
+      saveDataToStorage();
+      renderCoachDashboard();
+
+      const labels={keep:'misma rutina',update:'rutina copiada para actualizar',new:'rutina nueva desde cero'};
+      showToast(`Plan #${next.number} creado con ${labels[mode]}. El plan anterior quedó archivado.`,'success');
+    }
+
+    function openRoutineHistoryModal(id){
+      const c=appData.clients.find(x=>x.id===id),list=(appData.plans[id]||[]).filter(p=>!p.active).slice().reverse();document.getElementById('routineHistoryTitle').textContent=`Historial de Planes: ${c?.name||'Alumno'}`;const box=document.getElementById('routineHistoryContent');
+      if(!list.length){box.innerHTML='<div class="bg-zinc-50 border border-zinc-200 rounded-xl p-8 text-center text-zinc-500"><i class="fas fa-folder-open text-3xl mb-2"></i><p class="text-xs font-bold">Todavía no hay planes anteriores archivados.</p></div>';openModal('routineHistoryModal');return;}
+      box.innerHTML=list.map(p=>{const sessions=getPlanSessions(id,p.id,true),cardios=(appData.cardioLogs[id]||[]).filter(x=>x.planId===p.id),reports=(appData.reports[id]||[]).filter(r=>r.planId===p.id);const days=Object.entries(p.routines||{}).filter(([d,e])=>(e||[]).length);return `<div class="border border-zinc-200 rounded-2xl p-4 shadow-sm bg-white"><div class="flex justify-between"><div><h4 class="text-sm font-black">Plan #${p.number}</h4><p class="text-[10px] text-zinc-500">${esc(p.startDate)} → ${esc(p.endDate)}</p></div><span class="text-[9px] font-black bg-amber-100 text-amber-800 px-2 py-1 rounded-full">ARCHIVADO</span></div><div class="mt-3 grid grid-cols-3 gap-2"><div class="p-2 bg-zinc-50 rounded-lg text-center"><b class="text-xs">${sessions.length}</b><span class="block text-[9px]">sesiones</span></div><div class="p-2 bg-zinc-50 rounded-lg text-center"><b class="text-xs">${cardios.length}</b><span class="block text-[9px]">cardios</span></div><div class="p-2 bg-zinc-50 rounded-lg text-center"><b class="text-xs">${reports.length}</b><span class="block text-[9px]">informes</span></div></div><div class="mt-3 space-y-2">${days.map(([d,ex])=>`<div class="bg-zinc-50 border border-zinc-200 rounded-xl p-3"><div class="text-[10px] font-black text-red-600 uppercase">${esc(d)}</div>${ex.map(x=>`<div class="text-xs mt-1"><b>${esc(x.name)}</b><span class="text-zinc-500 ml-2">${x.sets} × ${esc(x.reps)}</span></div>`).join('')}</div>`).join('')||'<p class="text-xs text-zinc-400">Sin ejercicios.</p>'}</div></div>`;}).join('');openModal('routineHistoryModal');
+    }
+
+    function updateClientNotes(id,text){const c=appData.clients.find(x=>x.id===id);if(c){c.notes=text;saveDataToStorage();showToast('Nota guardada.','success');}}
+    function deleteClient(id){ const c=appData.clients.find(x=>x.id===id); if(!c)return; if(!confirm('¿Archivar este alumno? Sus planes, entrenamientos, cardio e informes históricos se conservarán y ya no aparecerá como alumno activo.'))return; c.enabled=false; c.archived=true; c.archivedAt=nowISO(); saveDataToStorage(); renderCoachDashboard(); showToast('Alumno archivado. Su historial se conservó.','info'); }
+    function openAddClientModal(){document.getElementById('newClientName').value='';document.getElementById('newClientPin').value='';document.getElementById('newClientDaysRemaining').value='30';openModal('addClientModal');}
+    function getPlanDatesForRemainingDays(daysRemaining){
+      const remaining=Math.min(PLAN_DAYS,Math.max(1,Number(daysRemaining)||PLAN_DAYS));
+      const today=getLocalDateISO();
+      // Conservamos un ciclo conceptual de 30 días y hacemos que HOY muestre exactamente los días restantes indicados.
+      const elapsedBeforeToday=PLAN_DAYS-remaining;
+      const start=addDaysISO(today,-elapsedBeforeToday);
+      const end=addDaysISO(today,remaining-1);
+      return {start,end,remaining};
+    }
+    function handleAddClientSubmit(e){e.preventDefault();const name=document.getElementById('newClientName').value.trim(),pin=document.getElementById('newClientPin').value.trim(),days=Number(document.getElementById('newClientDaysRemaining').value);if(!name||!/^[0-9]{6}$/.test(pin)){showToast('Completa correctamente nombre y PIN de 6 dígitos.','error');return;}if(!Number.isInteger(days)||days<1||days>30){showToast('Los días restantes deben ser un número del 1 al 30.','error');return;}if(appData.clients.some(c=>c.pin===pin)){showToast('Ese PIN ya está en uso.','error');return;}const id=uid('client'),dates=getPlanDatesForRemainingDays(days),p={id:uid('plan'),number:1,startDate:dates.start,endDate:dates.end,createdAt:nowISO(),active:true,routines:{},configuredRemainingDays:days};appData.clients.push({id,name,pin,startDate:new Date(`${dates.start}T12:00:00`).toISOString(),enabled:true,notes:'',activePlanId:p.id,initialRemainingDays:days});appData.routines[id]={};appData.plans[id]=[p];appData.trainingLogs[id]=[];appData.cardioLogs[id]=[];appData.reports[id]=[];saveDataToStorage();closeModal('addClientModal');renderCoachDashboard();showToast(`Alumno ${name} registrado con ${days} día(s) restantes.`,'success');}
+    function openAdjustDaysModal(id){const c=appData.clients.find(x=>x.id===id);const p=getActivePlan(id);if(!c||!p)return;const meta=clientPlanMeta(c);document.getElementById('adjustDaysClientId').value=id;document.getElementById('adjustDaysInput').value=String(Math.max(1,Math.min(30,meta?.remaining??30)));document.getElementById('adjustDaysSubtitle').textContent=`${c.name}: ajusta los días disponibles de su plan actual.`;openModal('adjustDaysModal');}
+    function handleAdjustDaysSubmit(e){e.preventDefault();const id=document.getElementById('adjustDaysClientId').value,days=Number(document.getElementById('adjustDaysInput').value);const c=appData.clients.find(x=>x.id===id),p=getActivePlan(id);if(!c||!p)return;if(!Number.isInteger(days)||days<1||days>30){showToast('Los días restantes deben estar entre 1 y 30.','error');return;}const dates=getPlanDatesForRemainingDays(days);p.startDate=dates.start;p.endDate=dates.end;p.remainingDaysConfigured=days;c.startDate=new Date(`${dates.start}T12:00:00`).toISOString();c.remainingDaysConfigured=days;saveDataToStorage();closeModal('adjustDaysModal');renderCoachDashboard();if(currentRole==='client'&&currentClientId===id)renderClientDashboard();showToast(`${c.name} ahora tiene ${days} día(s) restantes en su plan actual.`,'success');}
+
+    function openEditRoutineModal(id){activeRoutineModalClientId=id;activeRoutineModalDay='Lunes';const c=appData.clients.find(x=>x.id===id);document.getElementById('routineModalClientName').textContent=`Editar Rutina: ${c?.name||'Alumno'}`;selectRoutineModalDay('Lunes');openModal('editRoutineModal');}
+    function selectRoutineModalDay(day){activeRoutineModalDay=day;document.querySelectorAll('.routine-day-tab').forEach(t=>{t.className=`routine-day-tab px-3 py-2 text-xs font-bold ${t.dataset.day===day?'text-red-600 border-b-2 border-red-600':'text-zinc-500 border-b-2 border-transparent hover:text-zinc-900'}`;});document.getElementById('modalCurrentDayText').textContent=day;renderRoutineModalExercises();}
+    function renderRoutineModalExercises(){const container=document.getElementById('modalRoutineExercisesList');container.innerHTML='';const p=getActivePlan(activeRoutineModalClientId),list=p?.routines?.[activeRoutineModalDay]||[];if(!list.length){container.innerHTML='<p class="text-xs text-zinc-400 font-medium p-3 text-center">Sin ejercicios asignados.</p>';return;}list.forEach(ex=>{const item=document.createElement('div');item.className='flex items-center justify-between bg-zinc-50 border border-zinc-200 p-3 rounded-xl shadow-sm';item.innerHTML=`<div class="flex items-center gap-3"><img src="${esc(ex.img||EXERCISE_CATALOG[0].defaultImg)}" class="w-10 h-10 object-cover rounded-lg border border-zinc-200"><div><h5 class="text-xs font-bold">${esc(ex.name)}</h5><p class="text-[10px] text-zinc-500">${Number(ex.sets)} series × ${esc(ex.reps)} reps | <strong class="text-red-600">${esc(ex.category||'General')}</strong></p></div></div><button onclick="removeExerciseFromRoutine('${esc(ex.id)}')" class="p-2 text-zinc-400 hover:text-red-600 text-xs"><i class="fas fa-trash"></i></button>`;container.appendChild(item);});}
+    function handleAddExerciseToRoutine(){const p=getActivePlan(activeRoutineModalClientId);if(!p)return;const name=document.getElementById('modalExName').value.trim(),category=document.getElementById('modalExCategory').value.trim()||'General',sets=Number(document.getElementById('modalExSets').value),reps=document.getElementById('modalExReps').value.trim(),img=document.getElementById('modalExImg').value.trim()||EXERCISE_CATALOG[0].defaultImg;if(!name||!Number.isInteger(sets)||sets<1||sets>20||!reps){showToast('Completa nombre, series y repeticiones.','error');return;}p.routines[activeRoutineModalDay]=p.routines[activeRoutineModalDay]||[];p.routines[activeRoutineModalDay].push({id:uid('ex'),name,category,sets,reps,img});appData.routines[activeRoutineModalClientId]=p.routines;saveDataToStorage();renderRoutineModalExercises();showToast('Ejercicio añadido al plan actual.','success');}
+    function removeExerciseFromRoutine(id){const p=getActivePlan(activeRoutineModalClientId);if(!p)return;if(!confirm('¿Eliminar este ejercicio del plan actual? Los registros históricos no se borrarán.'))return;Object.keys(p.routines||{}).forEach(d=>{p.routines[d]=(p.routines[d]||[]).filter(x=>x.id!==id);});appData.routines[activeRoutineModalClientId]=p.routines;saveDataToStorage();renderRoutineModalExercises();showToast('Ejercicio eliminado del plan actual.','info');}
+
+    // ===== INFORMES =====
+    function openReportModal(){
+      if(!currentClientId)return; const c=appData.clients.find(x=>x.id===currentClientId),p=getActivePlan(currentClientId),week=getWeekStartISO();
+      document.getElementById('reportPeriodText').textContent=`${formatDateShort(week)} → ${formatDateShort(getWeekEndISO(week))} • Plan #${p.number}`;
+      const existing=(appData.reports[currentClientId]||[]).find(r=>r.planId===p.id&&r.weekStart===week);
+      const fields={reportFeeling:'feeling',reportEnergy:'energy',reportRecovery:'recovery',reportDiscomfort:'discomfort',reportBestExercise:'bestExercise',reportHardExercise:'hardExercise',reportComments:'comments'};
+      Object.entries(fields).forEach(([id,key])=>document.getElementById(id).value=existing?.[key]||'');
+      document.getElementById('reportSubmitBtn').innerHTML=existing?'<i class="fas fa-save mr-1"></i> ACTUALIZAR INFORME DE ESTA SEMANA':'<i class="fas fa-paper-plane mr-1"></i> GUARDAR Y ENVIAR INFORME';
+      openModal('reportModal');
+    }
+    function handleReportSubmit(e){
+      e.preventDefault(); if(!currentClientId)return; const p=getActivePlan(currentClientId),week=getWeekStartISO(),list=appData.reports[currentClientId]||[];
+      const payload={planId:p.id,weekStart:week,feeling:document.getElementById('reportFeeling').value.trim(),energy:document.getElementById('reportEnergy').value,recovery:document.getElementById('reportRecovery').value,discomfort:document.getElementById('reportDiscomfort').value.trim(),bestExercise:document.getElementById('reportBestExercise').value.trim(),hardExercise:document.getElementById('reportHardExercise').value.trim(),comments:document.getElementById('reportComments').value.trim()};
+      if(!payload.feeling||!payload.energy||!payload.recovery){showToast('Completa cómo te sentiste, energía y recuperación.','error');return;}
+      let report=list.find(r=>r.planId===p.id&&r.weekStart===week);
+      if(report){Object.assign(report,payload,{updatedAt:nowISO(),status:'new'});}
+      else {report={id:uid('report'),clientId:currentClientId,createdAt:nowISO(),status:'new',...payload};list.push(report);}
+      appData.reports[currentClientId]=list;appData.notifications.push({id:uid('notification'),type:'report',clientId:currentClientId,reportId:report.id,createdAt:nowISO(),read:false,message:`${appData.clients.find(c=>c.id===currentClientId)?.name||'Alumno'} envió un informe semanal.`});saveDataToStorage();closeModal('reportModal');showToast('Informe guardado correctamente y marcado para revisión de Dave.','success');
+    }
+    function openClientReports(id){activeReportsClientId=id;const c=appData.clients.find(x=>x.id===id);document.getElementById('reportsViewerTitle').textContent=`Informes: ${c?.name||'Alumno'}`;const reports=(appData.reports[id]||[]).slice().sort((a,b)=>b.createdAt.localeCompare(a.createdAt));const box=document.getElementById('reportsViewerContent');if(!reports.length){box.innerHTML='<div class="text-center p-8 text-zinc-500"><i class="fas fa-file-medical text-3xl mb-2"></i><p class="text-xs font-bold">Este alumno todavía no ha enviado informes.</p></div>';openModal('reportsViewerModal');return;}box.innerHTML=reports.map(r=>{r.status='read';return `<article class="border border-zinc-200 rounded-2xl p-4 shadow-sm"><div class="flex justify-between items-start gap-3"><div><span class="text-[10px] font-black text-red-600 uppercase">Semana ${esc(formatDateShort(r.weekStart))}</span><h4 class="text-sm font-extrabold mt-1">${esc(r.feeling)}</h4></div><span class="text-[9px] font-bold px-2 py-1 rounded-full ${r.status==='new'?'bg-red-100 text-red-700':'bg-emerald-100 text-emerald-700'}">${r.status==='new'?'NUEVO':'REVISADO'}</span></div><div class="grid grid-cols-2 gap-2 mt-3 text-xs"><div class="bg-zinc-50 rounded-lg p-2"><b>Energía:</b> ${esc(r.energy)}</div><div class="bg-zinc-50 rounded-lg p-2"><b>Recuperación:</b> ${esc(r.recovery)}</div></div><div class="mt-3 space-y-2 text-xs"><p><b>Molestias:</b> ${esc(r.discomfort||'Ninguna registrada')}</p><p><b>Mejor ejercicio:</b> ${esc(r.bestExercise||'No indicado')}</p><p><b>Más difícil:</b> ${esc(r.hardExercise||'No indicado')}</p><p><b>Comentarios:</b> ${esc(r.comments||'Sin comentarios')}</p></div><div class="mt-3 text-[10px] text-zinc-400">Plan ${esc(String((appData.plans[id]||[]).find(p=>p.id===r.planId)?.number||'?'))} • ${esc(formatDateShort(r.createdAt.slice(0,10)))}</div></article>`;}).join('');saveDataToStorage();openModal('reportsViewerModal');}
+
+    function setCloudStatus(mode,text){
+      const el=document.getElementById('cloudStatus'); if(!el)return;
+      const map={
+        local:['bg-zinc-100','text-zinc-500','border-zinc-200','bg-zinc-400','LOCAL'],
+        connecting:['bg-amber-50','text-amber-700','border-amber-200','bg-amber-500','CONECTANDO'],
+        online:['bg-emerald-50','text-emerald-700','border-emerald-200','bg-emerald-500','NUBE'],
+        offline:['bg-red-50','text-red-700','border-red-200','bg-red-500','SIN CONEXIÓN']
+      };
+      const cfg=map[mode]||map.local; el.className=`hidden md:inline-flex items-center gap-1.5 text-[10px] font-black px-2.5 py-1 rounded-xl ${cfg[0]} ${cfg[1]} ${cfg[2]}`; el.innerHTML=`<span class=\"w-1.5 h-1.5 rounded-full ${cfg[3]}\"></span>${text||cfg[4]}`; el.title=mode==='online'?'Datos sincronizados entre dispositivos':mode==='offline'?'Sin conexión con Firebase. Los cambios quedan guardados localmente.':'Estado del almacenamiento';
+      const banner=document.getElementById('cloudSetupBanner'); if(banner) banner.classList.toggle('hidden',mode!=='local');
+    }
+
+    // ===== UTILIDADES DE UI =====
+    function openImagePreview(title,category,img){document.getElementById('previewModalTitle').textContent=title;document.getElementById('previewModalCategory').textContent=category;document.getElementById('previewModalImg').src=img;openModal('imagePreviewModal');}
+    function togglePinVisibility(inputId,iconId){const input=document.getElementById(inputId),icon=document.getElementById(iconId);input.type=input.type==='password'?'text':'password';icon.className=input.type==='password'?'fas fa-eye':'fas fa-eye-slash';}
+    function openModal(id){document.getElementById(id)?.classList.remove('hidden');}
+    function closeModal(id){document.getElementById(id)?.classList.add('hidden');}
+    function showToast(message,type='info'){const box=document.getElementById('toastContainer');if(!box)return;const toast=document.createElement('div');const bg=type==='success'?'bg-emerald-800 text-white border-emerald-900':type==='error'?'bg-red-700 text-white border-red-800':'bg-zinc-900 text-white border-zinc-800';const icon=type==='success'?'fa-check-circle':type==='error'?'fa-exclamation-circle':'fa-info-circle';toast.className=`pointer-events-auto flex items-center gap-2 px-4 py-3 border rounded-xl shadow-xl text-xs font-bold ${bg}`;toast.innerHTML=`<i class="fas ${icon}"></i><span>${esc(message)}</span>`;box.appendChild(toast);setTimeout(()=>toast.remove(),3500);}
+
+    // ===== RESPALDO JSON =====
+    function exportData(){ const blob=new Blob([JSON.stringify(appData,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`supera-tus-limites-backup-${getLocalDateISO()}.json`;a.click();URL.revokeObjectURL(a.href);showToast('Respaldo exportado.','success'); }
+    function importDataFromFile(file){ const reader=new FileReader();reader.onload=()=>{try{const incoming=JSON.parse(reader.result);if(!incoming||!Array.isArray(incoming.clients))throw new Error('Formato inválido');appData=incoming;migrateLegacyData();saveDataToStorage();renderCoachDashboard();showToast('Respaldo importado correctamente.','success');}catch(e){showToast('El archivo no es un respaldo válido.','error');}};reader.readAsText(file); }
+  </script>
+
+  <script src="./firebase-config.js"></script>
+  <script type="module">
+    // Firebase se carga de forma dinámica solamente cuando hay configuración.
+    let initializeApp, getAuth, signInAnonymously, getFirestore, doc, getDoc, setDoc, deleteDoc, collection, getDocs, onSnapshot;
+    const CONFIG=window.FIREBASE_CONFIG||{};
+    const configured=!!(CONFIG.apiKey&&CONFIG.authDomain&&CONFIG.projectId&&CONFIG.appId);
+    const SECTION_MAP=['plans','routines','trainingLogs','cardioLogs','reports'];
+    const GLOBAL_SECTIONS=['notifications','settings','logs','routineHistory'];
+    let db=null,auth=null,cloudReady=false,cloudShadow=null,syncTimer=null,pulling=false,started=false;
+
+    const json=(v)=>JSON.stringify(v??{});
+    const clone=(v)=>JSON.parse(JSON.stringify(v??{}));
+    const eq=(a,b)=>json(a)===json(b);
+
+    function setStatus(mode,text){ window.setCloudStatus?.(mode,text); }
+    function markLocalTimestamp(){ return Number(localStorage.getItem('supera_your_limits_local_meta_v1')||0); }
+    function setLocalTimestamp(){ localStorage.setItem('supera_your_limits_local_meta_v1',String(Date.now())); }
+
+    async function readCloud(){
+      const result={clients:[],plans:{},routines:{},trainingLogs:{},cardioLogs:{},reports:{},notifications:[],settings:{theme:'light'},logs:{},routineHistory:{}};
+      const clientsSnap=await getDoc(doc(db,'clients','main'));
+      if(clientsSnap.exists()) result.clients=clientsSnap.data().value??[];
+      for(const name of SECTION_MAP){
+        const snap=await getDocs(collection(db,name));
+        snap.forEach(d=>{result[name][d.id]=d.data().value??d.data();});
+      }
+      for(const name of GLOBAL_SECTIONS){
+        const snap=await getDoc(doc(db,name,'main'));
+        if(snap.exists()) result[name]=snap.data().value??snap.data();
+      }
+      const metaSnap=await getDoc(doc(db,'meta','main'));
+      return {data:result,meta:metaSnap.exists()?metaSnap.data():null};
+    }
+
+    async function writeCloud(data,forceAll=false){
+      if(!db||!cloudReady)return;
+      const before=forceAll?null:cloudShadow||{};
+      const writes=[];
+      if(forceAll || !eq(data.clients,before.clients)) writes.push(setDoc(doc(db,'clients','main'),{value:clone(data.clients)}));
+      // Keep each client section in its own document: different clients cannot overwrite one another's records.
+      for(const section of SECTION_MAP){
+        const current=data[section]||{}; const previous=before?.[section]||{}; const ids=new Set([...Object.keys(current),...Object.keys(previous)]);
+        for(const id of ids){
+          if(forceAll || !eq(current[id],previous[id])){
+            if(current[id]===undefined) writes.push(deleteDoc(doc(db,section,id)));
+            else writes.push(setDoc(doc(db,section,id),{value:clone(current[id]),updatedAtMs:Date.now()}));
+          }
+        }
+      }
+      for(const name of GLOBAL_SECTIONS){
+        if(forceAll || !eq(data[name],before?.[name])) writes.push(setDoc(doc(db,name,'main'),{value:clone(data[name]),updatedAtMs:Date.now()}));
+      }
+      const stamp=Date.now();
+      writes.push(setDoc(doc(db,'meta','main'),{schema:1,appVersion:window.getAppVersion?.()||6,updatedAtMs:stamp,writerUid:auth.currentUser?.uid||'anonymous'}));
+      await Promise.all(writes);
+      cloudShadow=clone(data); setLocalTimestamp();
+      setStatus('online','NUBE ✓');
+    }
+
+    async function pullCloud(reason='remote'){
+      if(!db||!cloudReady||pulling)return;
+      pulling=true;
+      try{
+        const {data,meta}=await readCloud();
+        if(!meta){
+          await writeCloud(window.getAppData?.()||{},true);
+          return;
+        }
+        const localStamp=markLocalTimestamp();
+        if(localStamp>Number(meta.updatedAtMs||0) && reason!=='startup-force-cloud'){
+          await writeCloud(window.getAppData?.()||{},true);
+          return;
+        }
+        window.cloudApplying=true;
+        const merged={...window.getAppData?.(),...data,version:window.getAppVersion?.()||6};
+        window.setAppData?.(merged);
+        window.migrateLegacyData?.();
+        localStorage.setItem(window.getAppStorageKey?.()||'surpass_your_limits_v6_db',JSON.stringify(window.getAppData?.()||{}));
+        setLocalTimestamp();
+        cloudShadow=clone(window.getAppData?.()||{});
+        if(window.getCurrentRole?.()==='client'&&window.getCurrentClientId?.()) window.renderClientDashboard?.();
+        if(window.getCurrentRole?.()==='coach') window.renderCoachDashboard?.();
+      }catch(err){ console.error('Cloud pull error',err); setStatus('offline','NUBE ERROR'); }
+      finally{ window.cloudApplying=false; pulling=false; }
+    }
+
+    function queueSave(data){
+      if(!configured||!cloudReady||pulling)return;
+      clearTimeout(syncTimer);
+      syncTimer=setTimeout(()=>writeCloud(data,false).catch(err=>{console.error('Cloud save error',err);setStatus('offline','NO SINCRONIZA');}),700);
+    }
+
+    async function start(){
+      if(started)return; started=true;
+      if(!configured){ setStatus('local','LOCAL'); return; }
+      try{
+        setStatus('connecting','CONECTANDO');
+        const [core,authMod,fsMod]=await Promise.all([
+          import('https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js'),
+          import('https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js'),
+          import('https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js')
+        ]);
+        initializeApp=core.initializeApp;
+        getAuth=authMod.getAuth;
+        signInAnonymously=authMod.signInAnonymously;
+        getFirestore=fsMod.getFirestore;
+        doc=fsMod.doc; getDoc=fsMod.getDoc; setDoc=fsMod.setDoc; deleteDoc=fsMod.deleteDoc; collection=fsMod.collection; getDocs=fsMod.getDocs; onSnapshot=fsMod.onSnapshot;
+        const app=initializeApp(CONFIG);
+        auth=getAuth(app); db=getFirestore(app);
+        await signInAnonymously(auth);
+        cloudReady=true;
+        await pullCloud('startup');
+        onSnapshot(doc(db,'meta','main'),async snap=>{
+          if(!snap.exists()||pulling)return;
+          const meta=snap.data();
+          const own=meta.writerUid===auth.currentUser?.uid;
+          if(!own && Number(meta.updatedAtMs||0)>markLocalTimestamp()) await pullCloud('remote');
+        });
+        setStatus('online','NUBE ✓');
+      }catch(err){
+        console.error('Firebase error:',err);
+        cloudReady=false; setStatus('offline','SIN CONEXIÓN');
+        window.showToast?.('No se pudo conectar con la nube. Revisa firebase-config.js y las reglas de Firestore. Tus datos locales siguen disponibles.','error');
+      }
+    }
+
+    window.cloudBridge={start,queueSave,pull:pullCloud,isConfigured:configured};
+    start();
+  </script>
+</body>
+</html>
