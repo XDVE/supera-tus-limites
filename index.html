@@ -17,28 +17,16 @@
       theme: {
         extend: {
           colors: {
-            brand: {
-              red: '#dc2626',
-              redHover: '#b91c1c',
-              black: '#09090b',
-              darkGray: '#18181b',
-              lightBg: '#f8fafc',
-            }
+            brand: { red: '#dc2626', redHover: '#b91c1c', black: '#09090b', darkGray: '#18181b', lightBg: '#f8fafc' }
           },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          }
+          fontFamily: { sans: ['Inter', 'sans-serif'] }
         }
       }
     }
   </script>
 
   <style>
-    body {
-      background-color: #f8fafc;
-      color: #09090b;
-      font-family: 'Inter', sans-serif;
-    }
+    body { background-color: #f8fafc; color: #09090b; font-family: 'Inter', sans-serif; }
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #f1f5f9; }
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
@@ -50,7 +38,6 @@
   <!-- HEADER -->
   <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-zinc-200 px-4 py-3 shadow-sm">
     <div class="max-w-6xl mx-auto flex items-center justify-between">
-      
       <div class="flex items-center gap-3 cursor-pointer" onclick="goHome()">
         <div class="w-10 h-10 bg-zinc-900 border border-zinc-800 rounded-xl flex items-center justify-center shadow-md overflow-hidden">
           <span id="headerLogo" class="contents"></span>
@@ -66,16 +53,10 @@
           </svg>
         </div>
         <div>
-          <h1 class="text-lg font-black tracking-wider uppercase text-zinc-900 leading-none">
-            OBSESSUS
-          </h1>
+          <h1 class="text-lg font-black tracking-wider uppercase text-zinc-900 leading-none">OBSESSUS</h1>
           <p class="text-[10px] text-zinc-500 font-bold tracking-widest mt-0.5">@dve_mx</p>
         </div>
       </div>
-
-      <span id="cloudStatus" class="hidden md:inline-flex items-center gap-1.5 text-[10px] font-black px-2.5 py-1 bg-zinc-100 text-zinc-500 border border-zinc-200 rounded-xl">
-        <span class="w-1.5 h-1.5 rounded-full bg-zinc-400"></span> LOCAL
-      </span>
 
       <div id="navRightSection" class="flex items-center gap-3">
         <button onclick="openCoachLoginModal()" class="px-3.5 py-1.5 text-xs font-bold bg-zinc-900 hover:bg-zinc-800 text-white rounded-xl transition flex items-center gap-2 shadow-sm">
@@ -83,42 +64,31 @@
           <span>Modo Coach</span>
         </button>
       </div>
-
     </div>
   </header>
 
-  <!-- MAIN CONTAINER -->
+  <!-- MAIN -->
   <main class="flex-grow max-w-6xl w-full mx-auto px-4 py-6">
 
-    <!-- VIEW 1: LOGIN -->
+    <!-- LOGIN CLIENTE -->
     <section id="loginView" class="max-w-md mx-auto my-10 bg-white border border-zinc-200 rounded-2xl p-6 md:p-8 shadow-xl relative overflow-hidden">
       <div class="text-center mb-8">
         <div class="inline-flex items-center justify-center w-16 h-16 bg-zinc-900 rounded-2xl border border-zinc-800 mb-4 shadow-md overflow-hidden">
           <span id="loginLogo" class="contents"></span>
           <svg class="w-10 h-10 text-red-600" viewBox="0 0 100 100" fill="currentColor">
-            <g transform="translate(50, 45)">
-              <path d="M 0 -22 C -10 -22 -15 -10 0 0 C 15 -10 10 -22 0 -22 Z" transform="rotate(0)" />
-              <path d="M 0 -22 C -10 -22 -15 -10 0 0 C 15 -10 10 -22 0 -22 Z" transform="rotate(72)" />
-              <path d="M 0 -22 C -10 -22 -15 -10 0 0 C 15 -10 10 -22 0 -22 Z" transform="rotate(144)" />
-              <path d="M 0 -22 C -10 -22 -15 -10 0 0 C 15 -10 10 -22 0 -22 Z" transform="rotate(216)" />
-              <path d="M 0 -22 C -10 -22 -15 -10 0 0 C 15 -10 10 -22 0 -22 Z" transform="rotate(288)" />
-            </g>
+            <g transform="translate(50, 45)"><path d="M 0 -22 C -10 -22 -15 -10 0 0 C 15 -10 10 -22 0 -22 Z" transform="rotate(0)" /><path d="M 0 -22 C -10 -22 -15 -10 0 0 C 15 -10 10 -22 0 -22 Z" transform="rotate(72)" /><path d="M 0 -22 C -10 -22 -15 -10 0 0 C 15 -10 10 -22 0 -22 Z" transform="rotate(144)" /><path d="M 0 -22 C -10 -22 -15 -10 0 0 C 15 -10 10 -22 0 -22 Z" transform="rotate(216)" /><path d="M 0 -22 C -10 -22 -15 -10 0 0 C 15 -10 10 -22 0 -22 Z" transform="rotate(288)" /></g>
             <path d="M 48 45 Q 46 75 35 88 Q 38 88 51 45 Z" fill="currentColor" />
           </svg>
         </div>
         <h2 class="text-2xl font-black text-zinc-900">Ingreso OBSESSUS</h2>
-        <p class="text-xs text-zinc-500 mt-1 font-medium">Introduce el PIN de 6 dígitos otorgado por tu Coach Dave.</p>
+        <p class="text-xs text-zinc-500 mt-1 font-medium">Introduce tu PIN de 6 dígitos (Prueba: 111111 o 222222)</p>
       </div>
 
       <form onsubmit="handleClientLogin(event)" class="space-y-4">
         <div>
-          <label class="block text-xs font-bold uppercase tracking-wider text-zinc-600 mb-2">Código PIN de Acceso</label>
-          <div class="relative">
-            <input type="password" id="clientPinInput" maxlength="6" placeholder="• • • • • •" required
-              class="w-full bg-zinc-50 border border-zinc-300 text-zinc-900 text-center text-2xl tracking-[0.4em] font-mono rounded-xl py-3 px-4 focus:outline-none focus:border-red-600">
-          </div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-zinc-600 mb-2">PIN de Acceso</label>
+          <input type="password" id="clientPinInput" maxlength="6" placeholder="• • • • • •" required class="w-full bg-zinc-50 border border-zinc-300 text-zinc-900 text-center text-2xl tracking-[0.4em] font-mono rounded-xl py-3 px-4 focus:outline-none focus:border-red-600">
         </div>
-
         <button type="submit" class="w-full py-3.5 px-4 bg-red-600 hover:bg-red-700 text-white font-extrabold rounded-xl shadow-lg transition flex items-center justify-center gap-2">
           <span>ENTRAR A MI PLAN</span>
           <i class="fas fa-arrow-right text-xs"></i>
@@ -126,7 +96,7 @@
       </form>
     </section>
 
-    <!-- VIEW 2: CLIENT DASHBOARD -->
+    <!-- DASHBOARD CLIENTE -->
     <section id="clientDashboardView" class="hidden space-y-6">
       <div class="bg-white border border-zinc-200 rounded-2xl p-5 md:p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm">
         <div class="flex items-center gap-4">
@@ -144,131 +114,95 @@
 
         <div class="flex items-center gap-4 w-full md:w-auto justify-between border-t md:border-t-0 border-zinc-200 pt-3 md:pt-0">
           <div class="bg-zinc-50 border border-zinc-200 px-4 py-2 rounded-xl text-center">
-            <span class="text-[10px] text-zinc-500 font-bold uppercase block">Días Restantes</span>
-            <span id="daysRemainingCount" class="text-lg font-black text-zinc-900">0</span>
-            <span id="totalDaysBadge" class="text-[10px] text-zinc-500 font-semibold"> / 30d</span>
+            <span class="text-[10px] text-zinc-500 font-bold uppercase block">Días Asignados</span>
+            <span id="daysTotalCount" class="text-lg font-black text-zinc-900">30</span>
+            <span class="text-[10px] text-zinc-500 font-semibold"> Días</span>
           </div>
-
-          <div class="bg-zinc-50 border border-zinc-200 px-4 py-2 rounded-xl text-center">
-            <span class="text-[10px] text-zinc-500 font-bold uppercase block">Cumplimiento</span>
-            <span id="clientAdherenceScore" class="text-lg font-black text-red-600">100%</span>
-          </div>
-
-          <button onclick="logout()" class="p-2.5 bg-zinc-100 hover:bg-zinc-200 text-zinc-700 rounded-xl transition border border-zinc-200">
-            <i class="fas fa-sign-out-alt"></i>
-          </button>
+          <button onclick="logout()" class="p-2.5 bg-zinc-100 hover:bg-zinc-200 text-zinc-700 rounded-xl transition border border-zinc-200"><i class="fas fa-sign-out-alt"></i></button>
         </div>
       </div>
 
-      <!-- Rutina del Día -->
       <div class="space-y-2">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-bold text-zinc-600 uppercase tracking-wider">Seleccionar Día de Entreno</span>
-          
-          <div class="flex gap-2">
-            <button onclick="openMakeupModal()" class="text-xs font-bold px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 rounded-xl transition flex items-center gap-1.5 shadow-sm">
-              <i class="fas fa-history text-amber-600"></i>
-              <span>Reponer Día</span>
-            </button>
-            <button onclick="openReportModal()" class="text-xs font-bold px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-xl transition flex items-center gap-1.5 shadow-sm">
-              <i class="fas fa-file-medical text-red-600"></i>
-              <span>INFORME</span>
-            </button>
-          </div>
-        </div>
-
+        <span class="text-xs font-bold text-zinc-600 uppercase tracking-wider">Seleccionar Día</span>
         <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-          <button onclick="selectDay('Lunes')" class="day-btn flex-1 min-w-[90px] py-3 px-3 bg-white hover:bg-zinc-50 border border-zinc-200 rounded-xl text-xs font-bold text-zinc-600 transition text-center shadow-sm" data-day="Lunes">LUNES</button>
-          <button onclick="selectDay('Martes')" class="day-btn flex-1 min-w-[90px] py-3 px-3 bg-white hover:bg-zinc-50 border border-zinc-200 rounded-xl text-xs font-bold text-zinc-600 transition text-center shadow-sm" data-day="Martes">MARTES</button>
-          <button onclick="selectDay('Miércoles')" class="day-btn flex-1 min-w-[90px] py-3 px-3 bg-white hover:bg-zinc-50 border border-zinc-200 rounded-xl text-xs font-bold text-zinc-600 transition text-center shadow-sm" data-day="Miércoles">MIÉRCOLES</button>
-          <button onclick="selectDay('Jueves')" class="day-btn flex-1 min-w-[90px] py-3 px-3 bg-white hover:bg-zinc-50 border border-zinc-200 rounded-xl text-xs font-bold text-zinc-600 transition text-center shadow-sm" data-day="Jueves">JUEVES</button>
-          <button onclick="selectDay('Viernes')" class="day-btn flex-1 min-w-[90px] py-3 px-3 bg-white hover:bg-zinc-50 border border-zinc-200 rounded-xl text-xs font-bold text-zinc-600 transition text-center shadow-sm" data-day="Viernes">VIERNES</button>
-          <button onclick="selectDay('Sábado')" class="day-btn flex-1 min-w-[90px] py-3 px-3 bg-white hover:bg-zinc-50 border border-zinc-200 rounded-xl text-xs font-bold text-zinc-600 transition text-center shadow-sm" data-day="Sábado">SÁBADO</button>
-          <button onclick="selectDay('Domingo')" class="day-btn flex-1 min-w-[90px] py-3 px-3 bg-white hover:bg-zinc-50 border border-zinc-200 rounded-xl text-xs font-bold text-zinc-600 transition text-center shadow-sm" data-day="Domingo">DOMINGO</button>
+          <button onclick="selectDay('Lunes')" class="day-btn flex-1 min-w-[90px] py-3 px-3 bg-red-600 text-white rounded-xl text-xs font-bold transition text-center shadow-sm" data-day="Lunes">LUNES</button>
+          <button onclick="selectDay('Martes')" class="day-btn flex-1 min-w-[90px] py-3 px-3 bg-white border border-zinc-200 text-zinc-600 rounded-xl text-xs font-bold transition text-center shadow-sm" data-day="Martes">MARTES</button>
+          <button onclick="selectDay('Miércoles')" class="day-btn flex-1 min-w-[90px] py-3 px-3 bg-white border border-zinc-200 text-zinc-600 rounded-xl text-xs font-bold transition text-center shadow-sm" data-day="Miércoles">MIÉRCOLES</button>
+          <button onclick="selectDay('Jueves')" class="day-btn flex-1 min-w-[90px] py-3 px-3 bg-white border border-zinc-200 text-zinc-600 rounded-xl text-xs font-bold transition text-center shadow-sm" data-day="Jueves">JUEVES</button>
+          <button onclick="selectDay('Viernes')" class="day-btn flex-1 min-w-[90px] py-3 px-3 bg-white border border-zinc-200 text-zinc-600 rounded-xl text-xs font-bold transition text-center shadow-sm" data-day="Viernes">VIERNES</button>
+          <button onclick="selectDay('Sábado')" class="day-btn flex-1 min-w-[90px] py-3 px-3 bg-white border border-zinc-200 text-zinc-600 rounded-xl text-xs font-bold transition text-center shadow-sm" data-day="Sábado">SÁBADO</button>
+          <button onclick="selectDay('Domingo')" class="day-btn flex-1 min-w-[90px] py-3 px-3 bg-white border border-zinc-200 text-zinc-600 rounded-xl text-xs font-bold transition text-center shadow-sm" data-day="Domingo">DOMINGO</button>
         </div>
       </div>
 
-      <div id="exerciseCardsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Ejercicios del día -->
-      </div>
+      <div id="exerciseCardsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
 
-      <!-- Botón Finalizar -->
-      <div id="trainingCompletionBox" class="bg-white border border-zinc-200 rounded-2xl p-4 shadow-sm">
-        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-          <div>
-            <h3 class="text-sm font-black text-zinc-900 flex items-center gap-2">
-              <i class="fas fa-flag-checkered text-red-600"></i>
-              FINALIZACIÓN DEL ENTRENAMIENTO
-            </h3>
-            <p id="trainingCompletionStatus" class="text-xs text-zinc-500 mt-1">Registra oficialmente la sesión al terminar.</p>
-          </div>
-          <button id="finishTrainingBtn" onclick="finishTrainingSession()" class="w-full sm:w-auto py-2.5 px-5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black rounded-xl shadow-md transition flex items-center justify-center gap-2">
-            <i class="fas fa-check-circle"></i>
-            <span>FINALIZAR ENTRENAMIENTO</span>
-          </button>
+      <div class="bg-white border border-zinc-200 rounded-2xl p-4 shadow-sm flex items-center justify-between">
+        <div>
+          <h3 class="text-sm font-black text-zinc-900"><i class="fas fa-flag-checkered text-red-600 mr-2"></i>FINALIZAR SESIÓN</h3>
+          <p class="text-xs text-zinc-500 mt-0.5">Guarda tu progreso del día.</p>
         </div>
+        <button onclick="finishTrainingSession()" class="py-2.5 px-5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black rounded-xl shadow transition">REGISTRAR</button>
       </div>
     </section>
 
-    <!-- VIEW 3: COACH DASHBOARD -->
+    <!-- DASHBOARD COACH -->
     <section id="coachDashboardView" class="hidden space-y-6">
       <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-white">
         <div>
-          <div class="flex items-center gap-2">
-            <span class="px-2.5 py-0.5 bg-red-600 text-white font-black text-[10px] rounded-md uppercase tracking-widest">COACH PANEL</span>
-            <h2 class="text-2xl font-black text-white">OBSESSUS | Admin Dashboard</h2>
-          </div>
-          <p class="text-xs text-zinc-400 mt-1">Gestión de días de acceso, rutinas prehechas y avances de atletas.</p>
+          <span class="px-2.5 py-0.5 bg-red-600 text-white font-black text-[10px] rounded-md uppercase tracking-widest">COACH PANEL</span>
+          <h2 class="text-2xl font-black text-white mt-1">OBSESSUS | Admin</h2>
         </div>
 
         <div class="flex items-center gap-3">
           <button onclick="openAddClientModal()" class="py-2.5 px-4 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-xl shadow-lg transition flex items-center gap-2">
-            <i class="fas fa-user-plus"></i>
-            <span>NUEVO ATLETA</span>
+            <i class="fas fa-user-plus"></i><span>NUEVO ATLETA</span>
           </button>
-          <button onclick="logout()" class="p-2.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 hover:text-white rounded-xl transition">
-            <i class="fas fa-sign-out-alt"></i>
-          </button>
+          <button onclick="logout()" class="p-2.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-xl transition"><i class="fas fa-sign-out-alt"></i></button>
         </div>
       </div>
 
       <div class="bg-white border border-zinc-200 rounded-2xl p-6 shadow-sm">
-        <h3 class="text-lg font-black text-zinc-900 mb-4 flex items-center gap-2">
-          <i class="fas fa-users-cog text-red-600"></i>
-          <span>Atletas Registrados</span>
-        </h3>
-        <div id="coachClientsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <!-- Tarjetas de atletas -->
-        </div>
+        <h3 class="text-lg font-black text-zinc-900 mb-4 flex items-center gap-2"><i class="fas fa-users text-red-600"></i>Atletas Registrados</h3>
+        <div id="coachClientsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
       </div>
     </section>
 
   </main>
 
-  <!-- MODAL: AGREGAR NUEVO ATLETA CON DÍAS PERSONALIZADOS -->
+  <!-- MODAL COACH LOGIN -->
+  <div id="coachLoginModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white border border-zinc-200 rounded-2xl max-w-sm w-full p-6 shadow-2xl relative">
+      <button onclick="closeModal('coachLoginModal')" class="absolute top-4 right-4 text-zinc-400 hover:text-zinc-800"><i class="fas fa-times"></i></button>
+      <div class="text-center mb-6">
+        <div class="w-12 h-12 bg-red-50 text-red-600 rounded-xl flex items-center justify-center mx-auto mb-2 text-xl"><i class="fas fa-lock"></i></div>
+        <h3 class="text-xl font-black text-zinc-900">Acceso Coach OBSESSUS</h3>
+        <p class="text-xs text-zinc-500 mt-1">Ingresa la clave maestra (200303)</p>
+      </div>
+      <form onsubmit="handleCoachLogin(event)" class="space-y-4">
+        <input type="password" id="coachPinInput" placeholder="Clave Coach" required class="w-full bg-zinc-50 border border-zinc-300 text-center font-mono text-xl rounded-xl py-3 px-4 focus:border-red-600">
+        <button type="submit" class="w-full py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition">ENTRAR</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL NUEVO ATLETA -->
   <div id="addClientModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white border border-zinc-200 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
       <button onclick="closeModal('addClientModal')" class="absolute top-4 right-4 text-zinc-400 hover:text-zinc-800"><i class="fas fa-times"></i></button>
-
-      <h3 class="text-xl font-black text-zinc-900 mb-4 flex items-center gap-2">
-        <i class="fas fa-user-plus text-red-600"></i>
-        <span>Agregar Nuevo Atleta</span>
-      </h3>
-
+      <h3 class="text-xl font-black text-zinc-900 mb-4"><i class="fas fa-user-plus text-red-600 mr-2"></i>Agregar Atleta</h3>
       <form onsubmit="handleAddClientSubmit(event)" class="space-y-4">
         <div>
           <label class="block text-xs font-bold text-zinc-600 mb-1">Nombre Completo</label>
-          <input type="text" id="newClientName" placeholder="Ej. Alex Rivera" required class="w-full bg-zinc-50 border border-zinc-300 text-zinc-900 rounded-xl py-2.5 px-3 text-sm focus:border-red-600">
+          <input type="text" id="newClientName" required class="w-full bg-zinc-50 border border-zinc-300 rounded-xl py-2.5 px-3 text-sm">
         </div>
-
         <div>
-          <label class="block text-xs font-bold text-zinc-600 mb-1">Código PIN (6 dígitos)</label>
-          <input type="text" id="newClientPin" placeholder="Ej. 123456" maxlength="6" required pattern="[0-9]{6}" class="w-full bg-zinc-50 border border-zinc-300 text-zinc-900 rounded-xl py-2.5 px-3 text-sm font-mono focus:border-red-600">
+          <label class="block text-xs font-bold text-zinc-600 mb-1">PIN (6 dígitos)</label>
+          <input type="text" id="newClientPin" maxlength="6" pattern="[0-9]{6}" required class="w-full bg-zinc-50 border border-zinc-300 rounded-xl py-2.5 px-3 text-sm font-mono">
         </div>
-
         <div>
-          <label class="block text-xs font-bold text-zinc-600 mb-1">Días de Acceso del Plan</label>
-          <select id="newClientPlanDays" class="w-full bg-zinc-50 border border-zinc-300 text-zinc-900 rounded-xl py-2.5 px-3 text-sm font-semibold">
+          <label class="block text-xs font-bold text-zinc-600 mb-1">Días de Acceso Asignados</label>
+          <select id="newClientPlanDays" class="w-full bg-zinc-50 border border-zinc-300 rounded-xl py-2.5 px-3 text-sm font-semibold">
             <option value="15">15 Días</option>
             <option value="30" selected>30 Días (Mensual)</option>
             <option value="45">45 Días</option>
@@ -276,69 +210,47 @@
             <option value="90">90 Días (Trimestral)</option>
           </select>
         </div>
-
-        <button type="submit" class="w-full py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition">
-          CREAR ATLETA
-        </button>
+        <button type="submit" class="w-full py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl transition">CREAR ATLETA</button>
       </form>
     </div>
   </div>
 
-  <!-- MODAL EDITAR RUTINA & PLANTILLAS PREHECHAS -->
+  <!-- MODAL EDITAR RUTINA Y PLANTILLAS PREHECHAS -->
   <div id="editRoutineModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white border border-zinc-200 rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl relative">
       <div class="p-5 border-b border-zinc-200 flex items-center justify-between">
-        <div>
-          <h3 id="routineModalClientName" class="text-xl font-black text-zinc-900">Editar Rutina</h3>
-          <p class="text-xs text-zinc-500 font-medium">Asigna ejercicios manualmente o carga una rutina prehecha.</p>
-        </div>
+        <h3 id="routineModalClientName" class="text-xl font-black text-zinc-900">Editar Rutina</h3>
         <button onclick="closeModal('editRoutineModal')" class="text-zinc-400 hover:text-zinc-800"><i class="fas fa-times text-lg"></i></button>
       </div>
 
-      <!-- CARGAR RUTINA PREHECHA -->
-      <div class="p-4 bg-zinc-900 text-white border-b border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <!-- SECCIÓN DE RUTINAS PREHECHAS (1-CLIC) -->
+      <div class="p-4 bg-zinc-900 text-white flex flex-col sm:flex-row items-center justify-between gap-3">
         <div class="flex items-center gap-2">
           <i class="fas fa-bolt text-yellow-400 text-lg"></i>
           <div>
             <h4 class="text-xs font-black uppercase">Rutinas Prehechas (1-Clic)</h4>
-            <p class="text-[10px] text-zinc-400">Selecciona una plantilla para cargarla automáticamente.</p>
+            <p class="text-[10px] text-zinc-400">Carga automáticamente una plantilla semanal completa.</p>
           </div>
         </div>
         <div class="flex gap-2 w-full sm:w-auto">
-          <select id="presetRoutineSelect" class="bg-zinc-800 border border-zinc-700 text-white text-xs rounded-xl px-3 py-2 focus:outline-none">
-            <option value="">-- Seleccionar Plantilla --</option>
+          <select id="presetRoutineSelect" class="bg-zinc-800 border border-zinc-700 text-white text-xs rounded-xl px-3 py-2">
+            <option value="">-- Cargar Plantilla --</option>
             <option value="PPL">Push / Pull / Legs (PPL - 6 Días)</option>
-            <option value="UPPER_LOWER">Torso / Pierna (Upper Lower - 4 Días)</option>
-            <option value="GLUTES_FOCUSED">Enfoque Glúteos y Pierna (4 Días)</option>
             <option value="HOME_FULLBODY">Rutina Casa Sin Equipo (3 Días)</option>
-            <option value="FULLBODY_GYM">Fullbody Gym General (3 Días)</option>
           </select>
-          <button onclick="loadPresetRoutine()" class="px-3 py-2 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-xl shadow">CARGAR</button>
+          <button onclick="loadPresetRoutine()" class="px-3 py-2 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-xl">CARGAR</button>
         </div>
       </div>
 
-      <!-- Pestañas de Días -->
-      <div class="px-5 pt-3 border-b border-zinc-200 flex gap-2 overflow-x-auto scrollbar-none bg-zinc-50">
-        <button onclick="selectRoutineModalDay('Lunes')" class="routine-day-tab px-3 py-2 text-xs font-bold text-zinc-500 border-b-2 border-transparent" data-day="Lunes">LUNES</button>
-        <button onclick="selectRoutineModalDay('Martes')" class="routine-day-tab px-3 py-2 text-xs font-bold text-zinc-500 border-b-2 border-transparent" data-day="Martes">MARTES</button>
-        <button onclick="selectRoutineModalDay('Miércoles')" class="routine-day-tab px-3 py-2 text-xs font-bold text-zinc-500 border-b-2 border-transparent" data-day="Miércoles">MIÉRCOLES</button>
-        <button onclick="selectRoutineModalDay('Jueves')" class="routine-day-tab px-3 py-2 text-xs font-bold text-zinc-500 border-b-2 border-transparent" data-day="Jueves">JUEVES</button>
-        <button onclick="selectRoutineModalDay('Viernes')" class="routine-day-tab px-3 py-2 text-xs font-bold text-zinc-500 border-b-2 border-transparent" data-day="Viernes">VIERNES</button>
-        <button onclick="selectRoutineModalDay('Sábado')" class="routine-day-tab px-3 py-2 text-xs font-bold text-zinc-500 border-b-2 border-transparent" data-day="Sábado">SÁBADO</button>
-        <button onclick="selectRoutineModalDay('Domingo')" class="routine-day-tab px-3 py-2 text-xs font-bold text-zinc-500 border-b-2 border-transparent" data-day="Domingo">DOMINGO</button>
-      </div>
-
-      <div class="p-5 overflow-y-auto space-y-6 flex-grow">
-        <!-- Formulario Añadir Ejercicio -->
+      <div class="p-5 overflow-y-auto space-y-4 flex-grow">
         <div class="bg-zinc-50 border border-zinc-200 rounded-xl p-4 space-y-3">
-          <h4 class="text-xs font-bold text-red-600 uppercase tracking-wider">Añadir Ejercicio al Día</h4>
-          
+          <h4 class="text-xs font-bold text-red-600 uppercase">Añadir Ejercicio</h4>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div class="sm:col-span-2">
-              <label class="block text-[11px] text-zinc-600 font-bold mb-1">Filtrar por Grupo Muscular / Casa</label>
-              <select id="modalMuscleCategoryFilter" onchange="filterCatalogByMuscle(this.value)" class="w-full bg-white border border-zinc-300 text-zinc-900 text-xs rounded-lg p-2.5">
+              <label class="block text-[11px] text-zinc-600 font-bold mb-1">Filtrar Categoria / Casa</label>
+              <select id="modalMuscleCategoryFilter" onchange="filterCatalogByMuscle(this.value)" class="w-full bg-white border border-zinc-300 text-xs rounded-lg p-2.5">
                 <option value="ALL">-- Ver Todos --</option>
-                <option value="CASA">🏠 EJERCICIOS PARA CASA (Sin Equipo/Mancuernas)</option>
+                <option value="CASA">🏠 EJERCICIOS PARA CASA (Sin Equipo)</option>
                 <option value="Cuádriceps">Cuádriceps</option>
                 <option value="Femoral / Isquiotibiales">Femoral / Isquiotibiales</option>
                 <option value="Glúteos">Glúteos</option>
@@ -347,127 +259,131 @@
                 <option value="Hombros">Hombros</option>
                 <option value="Bíceps">Bíceps</option>
                 <option value="Tríceps">Tríceps</option>
-                <option value="Pantorrillas">Pantorrillas</option>
-                <option value="Abdomen / Core">Abdomen / Core</option>
               </select>
             </div>
-
             <div class="sm:col-span-2">
-              <label class="block text-[11px] text-zinc-600 font-bold mb-1">Seleccionar Ejercicio del Catálogo</label>
-              <select id="modalCatalogSelect" onchange="handleCatalogSelectChange(this)" class="w-full bg-white border border-zinc-300 text-zinc-900 text-xs rounded-lg p-2.5 focus:border-red-600">
+              <label class="block text-[11px] text-zinc-600 font-bold mb-1">Seleccionar del Catálogo</label>
+              <select id="modalCatalogSelect" onchange="handleCatalogSelectChange(this)" class="w-full bg-white border border-zinc-300 text-xs rounded-lg p-2.5">
                 <option value="">-- Elige un Ejercicio --</option>
               </select>
             </div>
-
             <div>
-              <label class="block text-[11px] text-zinc-600 font-bold mb-1">Nombre Ejercicio</label>
-              <input type="text" id="modalExName" required class="w-full bg-white border border-zinc-300 text-zinc-900 text-xs rounded-lg p-2.5">
+              <label class="block text-[11px] text-zinc-600 font-bold mb-1">Nombre</label>
+              <input type="text" id="modalExName" class="w-full bg-white border border-zinc-300 text-xs rounded-lg p-2.5">
             </div>
-
             <div>
-              <label class="block text-[11px] text-zinc-600 font-bold mb-1">Series</label>
-              <input type="number" id="modalExSets" value="4" min="1" max="10" class="w-full bg-white border border-zinc-300 text-zinc-900 text-xs rounded-lg p-2.5">
-            </div>
-
-            <div>
-              <label class="block text-[11px] text-zinc-600 font-bold mb-1">Rango de Repeticiones</label>
-              <input type="text" id="modalExReps" value="10-12" class="w-full bg-white border border-zinc-300 text-zinc-900 text-xs rounded-lg p-2.5">
+              <label class="block text-[11px] text-zinc-600 font-bold mb-1">Series x Reps</label>
+              <div class="flex gap-2">
+                <input type="number" id="modalExSets" value="4" class="w-1/2 bg-white border border-zinc-300 text-xs rounded-lg p-2.5">
+                <input type="text" id="modalExReps" value="10-12" class="w-1/2 bg-white border border-zinc-300 text-xs rounded-lg p-2.5">
+              </div>
             </div>
           </div>
-
-          <button onclick="handleAddExerciseToRoutine()" class="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-lg transition">
-            <i class="fas fa-plus mr-1"></i> AÑADIR EJERCICIO
-          </button>
+          <button onclick="handleAddExerciseToRoutine()" class="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-lg">AÑADIR A LUNES</button>
         </div>
 
         <div>
-          <h4 class="text-xs font-bold text-zinc-500 uppercase tracking-wider mb-3">Ejercicios Asignados para <span id="modalCurrentDayText" class="text-zinc-900">LUNES</span></h4>
+          <h4 class="text-xs font-bold text-zinc-500 uppercase mb-2">Ejercicios Asignados (Lunes)</h4>
           <div id="modalRoutineExercisesList" class="space-y-2"></div>
         </div>
       </div>
     </div>
   </div>
 
+  <footer class="border-t border-zinc-200 bg-white py-4 px-4 text-center text-xs text-zinc-500">
+    OBSESSUS © 2026 | Created by <strong>Dave</strong> (@dve_mx)
+  </footer>
+
+  <!-- LÓGICA COMPLETA DE JS -->
   <script>
-    // ===== CONFIGURACIÓN Y CATÁLOGOS =====
     const COACH_MASTER_PIN = "200303";
     const APP_STORAGE_KEY = "obsessus_v7_db";
     const LOGO_URL = "https://i.pinimg.com/736x/55/5f/4f/555f4f7005d0e67b46248c945fdf2304.jpg";
 
     const EXERCISE_CATALOG = [
-      // 🏠 EJERCICIOS PARA CASA
-      { name: 'Flexiones de Pecho (Push-Ups) en Piso', category: 'CASA', defaultImg: 'https://images.unsplash.com/photo-1598971639058-fab3c3109a00?w=600' },
-      { name: 'Flexiones Inclinadas (Manos Elevadas)', category: 'CASA', defaultImg: 'https://images.unsplash.com/photo-1598971639058-fab3c3109a00?w=600' },
-      { name: 'Flexiones Declinadas (Pies Elevados en Silla)', category: 'CASA', defaultImg: 'https://images.unsplash.com/photo-1598971639058-fab3c3109a00?w=600' },
-      { name: 'Sentadillas Libres con Peso Corporal', category: 'CASA', defaultImg: 'https://media.tenor.com/pdMmsiutWkcAAAAM/gym.gif' },
-      { name: 'Sentadillas Búlgaras en Silla / Sofá', category: 'CASA', defaultImg: 'https://media.tenor.com/pdMmsiutWkcAAAAM/gym.gif' },
-      { name: 'Zancadas Estáticas / Caminadas en Piso', category: 'CASA', defaultImg: 'https://media.tenor.com/pdMmsiutWkcAAAAM/gym.gif' },
-      { name: 'Puente de Glúteo en Piso (Glute Bridge)', category: 'CASA', defaultImg: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=600' },
-      { name: 'Fondos de Tríceps en Silla o Banco', category: 'CASA', defaultImg: 'https://images.unsplash.com/photo-1530822847156-5df684611749?w=600' },
-      { name: 'Remo con Ligas de Resistencia / Mancuerna Casera', category: 'CASA', defaultImg: 'https://images.unsplash.com/photo-1605296867304-46d5465a13f1?w=600' },
-      { name: 'Elevaciones Laterales con Botellas / Mancuernas', category: 'CASA', defaultImg: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=600' },
-      { name: 'Plancha Abdominal Isométrica', category: 'CASA', defaultImg: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=600' },
-      { name: 'Escaladores (Mountain Climbers)', category: 'CASA', defaultImg: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=600' },
-
-      // CUÁDRICEPS
-      { name: 'Sentadilla Libre con Barra (Squat)', category: 'Cuádriceps', defaultImg: 'https://media.tenor.com/pdMmsiutWkcAAAAM/gym.gif' },
-      { name: 'Prensa de Piernas 45°', category: 'Cuádriceps', defaultImg: 'https://media.tenor.com/yBaS_oBgidsAAAAM/gym.gif' },
-      { name: 'Sentadilla Hack (Hack Squat)', category: 'Cuádriceps', defaultImg: 'https://media1.tenor.com/m/jiqHF0MkHeYAAAAC/gym.gif' },
-      { name: 'Extensión de Cuádriceps en Máquina', category: 'Cuádriceps', defaultImg: 'https://media1.tenor.com/m/L-taJvA94kQAAAAC/leg-extension.gif' },
-      { name: 'Sentadilla Sissy', category: 'Cuádriceps', defaultImg: 'https://media.tenor.com/pdMmsiutWkcAAAAM/gym.gif' },
-
-      // FEMORAL / ISQUIOTIBIALES
-      { name: 'Peso Muerto Rumano con Barra', category: 'Femoral / Isquiotibiales', defaultImg: 'https://images.unsplash.com/photo-1534367507873-d2d7e24c797f?w=600' },
-      { name: 'Curl Femoral Tumbado en Máquina', category: 'Femoral / Isquiotibiales', defaultImg: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=600' },
-      { name: 'Curl Femoral Sentado en Máquina', category: 'Femoral / Isquiotibiales', defaultImg: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=600' },
-
-      // GLÚTEOS
-      { name: 'Hip Thrust con Barra / Máquina', category: 'Glúteos', defaultImg: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=600' },
-      { name: 'Patada de Glúteo en Polea Baja', category: 'Glúteos', defaultImg: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=600' },
-      { name: 'Abducción de Cadera en Máquina Sentado', category: 'Glúteos', defaultImg: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=600' },
-
-      // PECHO
-      { name: 'Press de Banca Plano con Barra', category: 'Pecho', defaultImg: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=600' },
-      { name: 'Press Inclinado con Mancuernas', category: 'Pecho', defaultImg: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=600' },
-      { name: 'Aperturas / Cruces de Polea en Máquina', category: 'Pecho', defaultImg: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=600' },
-
-      // ESPALDA
-      { name: 'Jalón al Pecho en Polea Alta', category: 'Espalda', defaultImg: 'https://images.unsplash.com/photo-1598971639058-fab3c3109a00?w=600' },
-      { name: 'Remo Gironde / Polea Baja Sentado', category: 'Espalda', defaultImg: 'https://images.unsplash.com/photo-1605296867304-46d5465a13f1?w=600' },
-      { name: 'Remo con Barra T', category: 'Espalda', defaultImg: 'https://images.unsplash.com/photo-1605296867304-46d5465a13f1?w=600' },
-
-      // HOMBROS
-      { name: 'Press Militar con Mancuernas / Barra', category: 'Hombros', defaultImg: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=600' },
-      { name: 'Elevaciones Laterales con Mancuernas / Polea', category: 'Hombros', defaultImg: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=600' },
-
-      // BÍCEPS Y TRÍCEPS
-      { name: 'Curl de Bíceps con Barra Z', category: 'Bíceps', defaultImg: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=600' },
-      { name: 'Extensión de Tríceps Polea Cuerda', category: 'Tríceps', defaultImg: 'https://images.unsplash.com/photo-1530822847156-5df684611749?w=600' }
+      // CASA
+      { name: 'Flexiones de Pecho (Push-Ups)', category: 'CASA' },
+      { name: 'Sentadillas Libres con Peso Corporal', category: 'CASA' },
+      { name: 'Sentadillas Búlgaras en Silla', category: 'CASA' },
+      { name: 'Puente de Glúteo en Piso', category: 'CASA' },
+      { name: 'Fondos de Tríceps en Silla', category: 'CASA' },
+      { name: 'Plancha Abdominal Isométrica', category: 'CASA' },
+      // GIMNASIO
+      { name: 'Sentadilla Libre con Barra', category: 'Cuádriceps' },
+      { name: 'Prensa de Piernas 45°', category: 'Cuádriceps' },
+      { name: 'Extensión de Cuádriceps', category: 'Cuádriceps' },
+      { name: 'Peso Muerto Rumano con Barra', category: 'Femoral / Isquiotibiales' },
+      { name: 'Curl Femoral Tumbado', category: 'Femoral / Isquiotibiales' },
+      { name: 'Hip Thrust con Barra', category: 'Glúteos' },
+      { name: 'Press de Banca Plano con Barra', category: 'Pecho' },
+      { name: 'Press Inclinado con Mancuernas', category: 'Pecho' },
+      { name: 'Jalón al Pecho en Polea Alta', category: 'Espalda' },
+      { name: 'Remo Gironde Sentado', category: 'Espalda' },
+      { name: 'Press Militar con Mancuernas', category: 'Hombros' },
+      { name: 'Curl de Bíceps con Barra Z', category: 'Bíceps' },
+      { name: 'Extensión de Tríceps Polea Cuerda', category: 'Tríceps' }
     ];
 
     const PRESET_ROUTINES = {
       PPL: {
-        Lunes: [{ name: 'Press de Banca Plano con Barra', category: 'Pecho', sets: 4, reps: '8-10' }, { name: 'Press Inclinado con Mancuernas', category: 'Pecho', sets: 3, reps: '10-12' }, { name: 'Press Militar con Mancuernas / Barra', category: 'Hombros', sets: 4, reps: '10-12' }, { name: 'Extensión de Tríceps Polea Cuerda', category: 'Tríceps', sets: 4, reps: '12-15' }],
-        Martes: [{ name: 'Jalón al Pecho en Polea Alta', category: 'Espalda', sets: 4, reps: '10-12' }, { name: 'Remo Gironde / Polea Baja Sentado', category: 'Espalda', sets: 4, reps: '10-12' }, { name: 'Curl de Bíceps con Barra Z', category: 'Bíceps', sets: 4, reps: '10-12' }],
-        Miércoles: [{ name: 'Sentadilla Libre con Barra (Squat)', category: 'Cuádriceps', sets: 4, reps: '8-10' }, { name: 'Prensa de Piernas 45°', category: 'Cuádriceps', sets: 4, reps: '10-12' }, { name: 'Peso Muerto Rumano con Barra', category: 'Femoral / Isquiotibiales', sets: 4, reps: '10-12' }]
+        Lunes: [{ name: 'Press de Banca Plano con Barra', sets: 4, reps: '8-10' }, { name: 'Press Militar con Mancuernas', sets: 4, reps: '10-12' }],
+        Martes: [{ name: 'Jalón al Pecho en Polea Alta', sets: 4, reps: '10-12' }, { name: 'Curl de Bíceps con Barra Z', sets: 4, reps: '10-12' }],
+        Miércoles: [{ name: 'Sentadilla Libre con Barra', sets: 4, reps: '8-10' }, { name: 'Peso Muerto Rumano con Barra', sets: 4, reps: '10-12' }]
       },
       HOME_FULLBODY: {
-        Lunes: [{ name: 'Flexiones de Pecho (Push-Ups) en Piso', category: 'CASA', sets: 4, reps: '12-15' }, { name: 'Sentadillas Libres con Peso Corporal', category: 'CASA', sets: 4, reps: '15-20' }, { name: 'Plancha Abdominal Isométrica', category: 'CASA', sets: 3, reps: '45 seg' }],
-        Miércoles: [{ name: 'Sentadillas Búlgaras en Silla / Sofá', category: 'CASA', sets: 4, reps: '10-12' }, { name: 'Fondos de Tríceps en Silla o Banco', category: 'CASA', sets: 4, reps: '12-15' }],
-        Viernes: [{ name: 'Puente de Glúteo en Piso (Glute Bridge)', category: 'CASA', sets: 4, reps: '15-20' }, { name: 'Escaladores (Mountain Climbers)', category: 'CASA', sets: 4, reps: '20' }]
+        Lunes: [{ name: 'Flexiones de Pecho (Push-Ups)', sets: 4, reps: '12-15' }, { name: 'Sentadillas Libres con Peso Corporal', sets: 4, reps: '15-20' }],
+        Miércoles: [{ name: 'Sentadillas Búlgaras en Silla', sets: 4, reps: '10-12' }, { name: 'Fondos de Tríceps en Silla', sets: 4, reps: '12-15' }]
       }
     };
 
-    let appData = { clients: [], routines: {}, plans: {}, trainingLogs: {}, cardioLogs: {}, reports: {} };
-    let currentRole = null, currentClientId = null, selectedDay = 'Lunes', activeRoutineModalClientId = null, activeRoutineModalDay = 'Lunes';
+    let appData = {
+      clients: [
+        { id: 'c1', name: 'Alex Rivera', pin: '111111', planDays: 30 },
+        { id: 'c2', name: 'Sofía Gómez', pin: '222222', planDays: 45 }
+      ],
+      routines: {
+        c1: { Lunes: [{ name: 'Sentadilla Libre con Barra', sets: 4, reps: '8-10' }] }
+      }
+    };
+
+    let currentRole = null, currentClientId = null, selectedDay = 'Lunes', activeRoutineModalClientId = null;
+
+    function init(){
+      const raw = localStorage.getItem(APP_STORAGE_KEY);
+      if(raw){ try{ appData = JSON.parse(raw); }catch(e){} }
+      save();
+      populateCatalogSelect();
+    }
+
+    function save(){ localStorage.setItem(APP_STORAGE_KEY, JSON.stringify(appData)); }
 
     function openModal(id){ document.getElementById(id)?.classList.remove('hidden'); }
     function closeModal(id){ document.getElementById(id)?.classList.add('hidden'); }
 
-    function goHome(){ currentRole = null; currentClientId = null; document.getElementById('loginView').classList.remove('hidden'); document.getElementById('clientDashboardView').classList.add('hidden'); document.getElementById('coachDashboardView').classList.add('hidden'); }
+    function goHome(){
+      currentRole = null; currentClientId = null;
+      document.getElementById('loginView').classList.remove('hidden');
+      document.getElementById('clientDashboardView').classList.add('hidden');
+      document.getElementById('coachDashboardView').classList.add('hidden');
+    }
+
     function logout(){ goHome(); }
 
-    function openCoachLoginModal(){ document.getElementById('coachPinInput').value = ''; openModal('coachLoginModal'); }
+    function handleClientLogin(e){
+      e.preventDefault();
+      const pin = document.getElementById('clientPinInput').value.trim();
+      const client = appData.clients.find(c => c.pin === pin);
+      if(client){
+        currentRole = 'client'; currentClientId = client.id;
+        document.getElementById('loginView').classList.add('hidden');
+        document.getElementById('clientDashboardView').classList.remove('hidden');
+        document.getElementById('clientWelcomeName').textContent = `Hola, ${client.name}`;
+        document.getElementById('daysTotalCount').textContent = client.planDays || 30;
+        renderClientExercises();
+      } else { alert('PIN Incorrecto'); }
+    }
+
+    function openCoachLoginModal(){ openModal('coachLoginModal'); }
     function handleCoachLogin(e){
       e.preventDefault();
       if(document.getElementById('coachPinInput').value.trim() === COACH_MASTER_PIN){
@@ -475,7 +391,7 @@
         document.getElementById('loginView').classList.add('hidden');
         document.getElementById('coachDashboardView').classList.remove('hidden');
         renderCoachDashboard();
-      }
+      } else { alert('Clave Incorrecta'); }
     }
 
     function renderCoachDashboard(){
@@ -489,7 +405,7 @@
           <p class="text-xs text-zinc-500 font-mono">PIN: <strong>${c.pin}</strong></p>
           <button onclick="openEditRoutineModal('${c.id}')" class="w-full py-2 bg-red-600 text-white text-xs font-bold rounded-xl"><i class="fas fa-dumbbell mr-1"></i> EDITAR RUTINA</button>
         </div>
-      `).join('') || '<p class="text-xs text-zinc-500">Sin atletas creados.</p>';
+      `).join('');
     }
 
     function openAddClientModal(){ openModal('addClientModal'); }
@@ -499,21 +415,21 @@
       const pin = document.getElementById('newClientPin').value.trim();
       const days = Number(document.getElementById('newClientPlanDays').value) || 30;
       const id = 'c_' + Date.now();
-      appData.clients.push({ id, name, pin, planDays: days, enabled: true });
+      appData.clients.push({ id, name, pin, planDays: days });
       appData.routines[id] = {};
-      closeModal('addClientModal');
-      renderCoachDashboard();
+      save(); closeModal('addClientModal'); renderCoachDashboard();
     }
 
     function openEditRoutineModal(id){
       activeRoutineModalClientId = id;
       document.getElementById('routineModalClientName').textContent = `Editar Rutina`;
-      populateCatalogSelect();
+      renderRoutineModalList();
       openModal('editRoutineModal');
     }
 
     function populateCatalogSelect(filterCategory = 'ALL'){
       const select = document.getElementById('modalCatalogSelect');
+      if(!select) return;
       select.innerHTML = '<option value="">-- Elige un Ejercicio --</option>';
       EXERCISE_CATALOG.forEach((item, index) => {
         if(filterCategory === 'ALL' || item.category === filterCategory){
@@ -528,16 +444,65 @@
     function filterCatalogByMuscle(cat){ populateCatalogSelect(cat); }
     function handleCatalogSelectChange(el){
       const item = EXERCISE_CATALOG[Number(el.value)];
-      if(!item) return;
-      document.getElementById('modalExName').value = item.name;
+      if(item) document.getElementById('modalExName').value = item.name;
+    }
+
+    function handleAddExerciseToRoutine(){
+      const name = document.getElementById('modalExName').value.trim();
+      const sets = Number(document.getElementById('modalExSets').value) || 4;
+      const reps = document.getElementById('modalExReps').value.trim() || '10-12';
+      if(!name) return;
+      if(!appData.routines[activeRoutineModalClientId]) appData.routines[activeRoutineModalClientId] = {};
+      if(!appData.routines[activeRoutineModalClientId].Lunes) appData.routines[activeRoutineModalClientId].Lunes = [];
+      appData.routines[activeRoutineModalClientId].Lunes.push({ name, sets, reps });
+      save(); renderRoutineModalList();
+    }
+
+    function renderRoutineModalList(){
+      const list = appData.routines[activeRoutineModalClientId]?.Lunes || [];
+      document.getElementById('modalRoutineExercisesList').innerHTML = list.map(ex => `
+        <div class="flex justify-between items-center bg-zinc-50 border p-2.5 rounded-xl text-xs font-bold">
+          <span>${ex.name} (${ex.sets}x${ex.reps})</span>
+        </div>
+      `).join('') || '<p class="text-xs text-zinc-400">Sin ejercicios asignados.</p>';
     }
 
     function loadPresetRoutine(){
       const val = document.getElementById('presetRoutineSelect').value;
-      if(!val || !PRESET_ROUTINES[val]) return;
-      appData.routines[activeRoutineModalClientId] = structuredClone(PRESET_ROUTINES[val]);
-      alert('Plantilla cargada exitosamente.');
+      if(val && PRESET_ROUTINES[val]){
+        appData.routines[activeRoutineModalClientId] = structuredClone(PRESET_ROUTINES[val]);
+        save(); renderRoutineModalList(); alert('Plantilla cargada');
+      }
     }
+
+    function selectDay(day){
+      selectedDay = day;
+      renderClientExercises();
+    }
+
+    function renderClientExercises(){
+      const list = appData.routines[currentClientId]?.[selectedDay] || [];
+      const container = document.getElementById('exerciseCardsContainer');
+      container.innerHTML = list.map(ex => `
+        <div class="bg-white border border-zinc-200 rounded-2xl p-4 shadow-sm space-y-3">
+          <h4 class="font-bold text-sm text-zinc-900">${ex.name}</h4>
+          <p class="text-xs text-zinc-500">${ex.sets} Series × ${ex.reps} Reps</p>
+          <div class="space-y-1">
+            ${Array.from({length: ex.sets}).map((_, i) => `
+              <div class="flex items-center gap-2 text-xs">
+                <span class="w-12 text-zinc-400">Serie ${i+1}</span>
+                <input type="number" placeholder="kg" class="w-full bg-zinc-50 border border-zinc-200 rounded p-1 text-center">
+                <input type="number" placeholder="reps" class="w-full bg-zinc-50 border border-zinc-200 rounded p-1 text-center">
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('') || '<p class="text-xs text-zinc-400 col-span-full text-center py-6">No hay ejercicios para este día.</p>';
+    }
+
+    function finishTrainingSession(){ alert('¡Entrenamiento del día registrado!'); }
+
+    window.onload = init;
   </script>
 </body>
 </html>
